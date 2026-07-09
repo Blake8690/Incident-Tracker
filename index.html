@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incident Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="wrap">
+      <span class="brand">🚨 Incident Tracker</span>
+      <span class="tag">Nationell täckning · alla 290 kommuner</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>Vet vad som händer i din kommun — innan du läser om det.</h1>
+      <p>
+        Incident Tracker bevakar polisens händelserapporter dygnet runt och
+        skickar ett e-postmeddelande när något nytt rapporteras nära dig.
+        Ingen app, inga notiser mitt i natten — bara relevant information.
+      </p>
+    </section>
+
+    <section class="card" id="signup">
+      <h2>Skapa din bevakning</h2>
+      <p class="muted">Fyll i uppgifterna nedan. Tar mindre än en minut.</p>
+
+      <form id="form">
+        <label for="name">Namn</label>
+        <input type="text" id="name" placeholder="Anna Andersson" required maxlength="100">
+
+        <label for="email">E-post</label>
+        <input type="email" id="email" placeholder="anna@exempel.se" required maxlength="255">
+
+        <label for="area">Kommun</label>
+        <input type="text" id="area-search" list="kommun-list" placeholder="Sök bland 290 kommuner…" required>
+        <datalist id="kommun-list"></datalist>
+
+        <button type="submit">Aktivera bevakning</button>
+      </form>
+
+      <p id="status"></p>
+
+      <p class="fineprint">
+        Genom att registrera dig godkänner du att vi lagrar din e-post för att
+        skicka dig händelserapporter. Du kan avregistrera dig när som helst.
+      </p>
+    </section>
+
+    <section class="steps">
+      <h2>Så fungerar det</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <span class="n"></span>
+          <h3>Registrera dig</h3>
+          <p>Ange namn, e-post och din kommun. Ingen app och ingen inloggning.</p>
+        </div>
+        <div class="step">
+          <span class="n"></span>
+          <h3>Vi bevakar polisen.se</h3>
+          <p>Vi hämtar löpande händelserapporter från Polismyndigheten dygnet runt.</p>
+        </div>
+        <div class="step">
+          <span class="n"></span>
+          <h3>Du får e-post</h3>
+          <p>En sammanfattning skickas när något nytt rapporteras nära dig — annars tystnad.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Incident Tracker — bevakning baserad på öppna data från polisen.se.</p>
+    </div>
+  </footer>
+
+  <script src="kommuner.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
