@@ -83,6 +83,9 @@ def delete_user(email):
     return jsonify({"ok": True})
 
 
+init_db()
+
+...
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True, port=5000)
