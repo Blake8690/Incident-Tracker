@@ -3,7 +3,7 @@
 An automated system that monitors Swedish police events and sends email
 notifications to registered users, based on their municipality (kommun).
 
-**Live site:** _add URL once launched_
+**Live site:** [incidenttracker.se](https://incidenttracker.se)
 
 ## About the project
 
@@ -46,7 +46,7 @@ something is actually worth knowing about.
 ## Project structure
 
 ```
-Indicent-Tracker/
+Incident-Tracker/
 ├── backend/
 │   ├── app.py              # Flask API — registration + SQLite
 │   ├── requirements.txt
@@ -98,5 +98,7 @@ Migrating this project away from Firebase gave me a better understanding of:
 
 ## Status
 
-In development — backend rebuilt on Flask/SQLite, frontend rebuilt in
-vanilla HTML/CSS/JS. Not yet launched publicly.
+Live at [incidenttracker.se](https://incidenttracker.se), backend hosted
+on Render, frontend on Netlify. Actively used for real signups — SQLite
+migration to Postgres (see Future improvements) is the main outstanding
+reliability item.
