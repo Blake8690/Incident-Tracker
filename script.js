@@ -1,4 +1,4 @@
-const API_URL = "https://incident-tracker-api.onrender.com";
+const API_URL = "https://indicent-tracker-com.onrender.com";
 const kommunList = document.getElementById("kommun-list");
 KOMMUNER.forEach((k) => {
   const opt = document.createElement("option");
