@@ -1,1 +1,35 @@
+name: Run Police Email Bot
 
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests python-dateutil
+
+      - name: Run script
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: python send_email.py
+
+      - name: Commit updated skickade.json
+        run: |
+          git config user.name "actions-user"
+          git config user.email "actions@github.com"
+          git add skickade.json
+          git commit -m "Uppdatera skickade händelser" || echo "Inga ändringar"
+          git push
