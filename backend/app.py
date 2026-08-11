@@ -1,38 +1,43 @@
+import os
 import re
-import sqlite3
-from pathlib import Path
 
+import psycopg2
+import psycopg2.extras
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # tillåt anrop från din frontend (Lovable/Netlify/etc)
+CORS(app)  # tillåt anrop från din frontend (Netlify/etc)
 
-DB_PATH = Path(__file__).parent / "incident_tracker.db"
+DATABASE_URL = os.environ["DATABASE_URL"]
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = psycopg2.connect(DATABASE_URL)
     return conn
 
 
 def init_db():
     conn = get_db()
-    conn.execute(
+    cur = conn.cursor()
+    cur.execute(
         """
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
             kommun TEXT NOT NULL,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
     conn.commit()
+    cur.close()
     conn.close()
+
+
+init_db()
 
 
 @app.post("/api/users")
@@ -50,15 +55,18 @@ def register_user():
         return jsonify({"error": "Kommun krävs."}), 400
 
     conn = get_db()
+    cur = conn.cursor()
     try:
-        conn.execute(
-            "INSERT INTO users (name, email, kommun) VALUES (?, ?, ?)",
+        cur.execute(
+            "INSERT INTO users (name, email, kommun) VALUES (%s, %s, %s)",
             (name, email, kommun),
         )
         conn.commit()
-    except sqlite3.IntegrityError:
+    except psycopg2.errors.UniqueViolation:
+        conn.rollback()
         return jsonify({"error": "E-postadressen är redan registrerad."}), 409
     finally:
+        cur.close()
         conn.close()
 
     return jsonify({"ok": True}), 201
@@ -69,7 +77,10 @@ def list_users():
     # Läses av send_email.py. Lägg till en delad hemlighet (header/token)
     # innan du hostar detta publikt, annars kan vem som helst dumpa listan.
     conn = get_db()
-    rows = conn.execute("SELECT name, email, kommun FROM users").fetchall()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("SELECT name, email, kommun FROM users")
+    rows = cur.fetchall()
+    cur.close()
     conn.close()
     return jsonify([dict(r) for r in rows])
 
@@ -77,15 +88,13 @@ def list_users():
 @app.delete("/api/users/<email>")
 def delete_user(email):
     conn = get_db()
-    conn.execute("DELETE FROM users WHERE email = ?", (email.lower(),))
+    cur = conn.cursor()
+    cur.execute("DELETE FROM users WHERE email = %s", (email.lower(),))
     conn.commit()
+    cur.close()
     conn.close()
     return jsonify({"ok": True})
 
-
-init_db()
-
-...
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
