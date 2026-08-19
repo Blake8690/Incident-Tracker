@@ -128,6 +128,9 @@ for event in polisdata:
     relevanta_events.append(event)
 
 # HÄMTA ANVÄNDARE FRÅN EGEN API (Flask + SQLite)
+import time
+requests.get(f"{API_URL}/")  # Väck servern
+time.sleep(15)               # Vänta tills den är vaken
 resp = requests.get(f"{API_URL}/api/users")
 resp.raise_for_status()
 anvandare = resp.json()
