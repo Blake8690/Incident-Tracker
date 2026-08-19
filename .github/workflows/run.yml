@@ -5,6 +5,10 @@ on:
     - cron: "*/5 * * * *"
   workflow_dispatch:
 
+concurrency:
+  group: email-bot-push
+  cancel-in-progress: false
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
@@ -30,6 +34,7 @@ jobs:
         run: |
           git config user.name "actions-user"
           git config user.email "actions@github.com"
+          git pull --rebase origin main
           git add skickade.json
           git commit -m "Uppdatera skickade händelser" || echo "Inga ändringar"
           git push
