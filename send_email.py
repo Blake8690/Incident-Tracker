@@ -7,8 +7,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from dateutil import parser
 from zoneinfo import ZoneInfo
+import time
 
-API_URL = os.environ["API_URL"]  # t.ex. https://din-app.onrender.com
+API_URL = os.environ["API_URL"]
 
 SVENSKA_MANADER = {
     1: "januari", 2: "februari", 3: "mars", 4: "april",
@@ -16,9 +17,6 @@ SVENSKA_MANADER = {
     9: "september", 10: "oktober", 11: "november", 12: "december"
 }
 
-# Kända stadsdelar mappade till sin kommun. Polisen skriver ofta bara
-# stadsdelen i location.name, inte kommunnamnet — utan denna mappning
-# missas sådana händelser helt vid kommun-matchning.
 DISTRICT_TO_KOMMUN = {
     "Stockholm": [
         "norrmalm", "vasastan", "östermalm", "kungsholmen", "gamla stan",
@@ -60,8 +58,6 @@ DISTRICT_TO_KOMMUN = {
 
 
 def hitta_kommun_for_handelse(full_text, valda_kommuner):
-    """Matcha en händelse mot en användares kommun, antingen via
-    kommunnamn direkt i texten eller via känd stadsdel."""
     for kommun in valda_kommuner:
         if kommun.lower() in full_text:
             return kommun
@@ -71,21 +67,20 @@ def hitta_kommun_for_handelse(full_text, valda_kommuner):
     return None
 
 
-SKICKADE_FIL = "skickade.json"
+# Väck servern
+requests.get(f"{API_URL}/")
+time.sleep(15)
 
-if os.path.exists(SKICKADE_FIL):
-    with open(SKICKADE_FIL, "r") as f:
-        skickade = set(json.load(f))
-else:
-    skickade = set()
+# Hämta redan skickade händelser från databasen
+resp = requests.get(f"{API_URL}/api/skickade")
+resp.raise_for_status()
+skickade = set(resp.json())
 
 nu = datetime.now(timezone.utc)
 
 polisapi = requests.get("https://polisen.se/api/events")
 polisdata = polisapi.json()
 
-# Filtrera relevanta händelser (samma logik som innan, men matcha på kommun
-# istället för län/mikroort — se separat kommun-lookup)
 relevanta_events = []
 
 for event in polisdata:
@@ -127,18 +122,13 @@ for event in polisdata:
     event["_tid"] = event_tid
     relevanta_events.append(event)
 
-# HÄMTA ANVÄNDARE FRÅN EGEN API (Flask + SQLite)
-import time
-requests.get(f"{API_URL}/")  # Väck servern
-time.sleep(15)               # Vänta tills den är vaken
+# Hämta användare
 resp = requests.get(f"{API_URL}/api/users")
 resp.raise_for_status()
 anvandare = resp.json()
 
 email_sender = os.environ["EMAIL_SENDER"]
 email_password = os.environ["EMAIL_PASSWORD"]
-
-nya_skickade = set()
 
 for user in anvandare:
     mottagare_email = user.get("email", "")
@@ -157,15 +147,10 @@ for user in anvandare:
     email_text = ""
     for event in events_for_kommun:
         namn = event.get("name", "")
-        # Brottstyp står som andra delen i namn-fältet, ex:
-        # "3 juli 02:28, Rattfylleri, Botkyrka" -> "Rattfylleri"
         delar = namn.split(",")
         brottstyp = delar[1].strip().capitalize() if len(delar) > 1 else ""
         summary = event.get("summary", "")
 
-        # Enda källan till tid — Polisens datetime-fält, konverterat till
-        # svensk lokal tid och formaterat på svenska. Ingen egen parsning
-        # av namn-strängen (det var källan till dubbla/felaktiga tider).
         lokal_tid = event["_tid"].astimezone(ZoneInfo("Europe/Stockholm"))
         manad = SVENSKA_MANADER[lokal_tid.month]
         tid_str = f"{lokal_tid.day} {manad}, {lokal_tid.strftime('%H:%M')}"
@@ -173,8 +158,6 @@ for user in anvandare:
         email_text += f"{tid_str}\n"
         email_text += f"{brottstyp}, {kommun.capitalize()}\n"
         email_text += f"{summary}\n\n"
-
-        nya_skickade.add(str(event.get("id", "")))
 
     email_text += "Incident Tracker — Real-time alerts"
 
@@ -195,9 +178,9 @@ for user in anvandare:
     except Exception as e:
         print(f"Kunde inte skicka till {mottagare_email}: {e}")
 
-skickade.update(nya_skickade)
-
-with open(SKICKADE_FIL, "w") as f:
-    json.dump(list(skickade), f)
+# Spara skickade händelser till databasen
+for event in relevanta_events:
+    event_id = str(event.get("id", ""))
+    requests.post(f"{API_URL}/api/skickade", json={"event_id": event_id})
 
 print("Klart!")

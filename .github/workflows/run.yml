@@ -36,7 +36,7 @@ jobs:
         run: |
           git config user.name "actions-user"
           git config user.email "actions@github.com"
-          git pull --rebase origin main
           git add skickade.json
           git commit -m "Uppdatera skickade händelser" || echo "Inga ändringar"
+          git pull --rebase origin main
           git push

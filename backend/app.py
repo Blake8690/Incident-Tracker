@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # tillåt anrop från din frontend (Netlify/etc)
+CORS(app)
 
 DATABASE_URL = os.environ["DATABASE_URL"]
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
@@ -29,6 +29,14 @@ def init_db():
             email TEXT NOT NULL UNIQUE,
             kommun TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS skickade_handelser (
+            event_id TEXT PRIMARY KEY,
+            skickad_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
@@ -74,8 +82,6 @@ def register_user():
 
 @app.get("/api/users")
 def list_users():
-    # Läses av send_email.py. Lägg till en delad hemlighet (header/token)
-    # innan du hostar detta publikt, annars kan vem som helst dumpa listan.
     conn = get_db()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute("SELECT name, email, kommun FROM users")
@@ -94,6 +100,35 @@ def delete_user(email):
     cur.close()
     conn.close()
     return jsonify({"ok": True})
+
+
+@app.get("/api/skickade")
+def get_skickade():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT event_id FROM skickade_handelser")
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify([r[0] for r in rows])
+
+
+@app.post("/api/skickade")
+def add_skickad():
+    data = request.get_json(silent=True) or {}
+    event_id = str(data.get("event_id", "")).strip()
+    if not event_id:
+        return jsonify({"error": "event_id krävs"}), 400
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO skickade_handelser (event_id) VALUES (%s) ON CONFLICT DO NOTHING",
+        (event_id,)
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({"ok": True}), 201
 
 
 if __name__ == "__main__":
