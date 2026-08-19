@@ -31,12 +31,3 @@ jobs:
           EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: python send_email.py
-
-      - name: Commit updated skickade.json
-        run: |
-          git config user.name "actions-user"
-          git config user.email "actions@github.com"
-          git add skickade.json
-          git commit -m "Uppdatera skickade händelser" || echo "Inga ändringar"
-          git pull --rebase origin main
-          git push
