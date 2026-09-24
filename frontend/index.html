@@ -1,85 +1,352 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Incident Tracker</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Tracker — Händelser nära dig</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d12;
+  --bg-soft: #10131a;
+  --card: #12151d;
+  --border: rgba(255,255,255,0.08);
+  --text: #f2f0ea;
+  --muted: #9aa1ac;
+  --gold: #c9a24a;
+  --gold-hover: #dcb662;
+  --radius: 14px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.6;
+}
+h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; margin: 0; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+.gold { color: var(--gold); }
+.muted { color: var(--muted); }
+.topbar { border-bottom: 1px solid var(--border); padding: 20px 0; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: rgba(201,162,74,0.12); border: 1px solid var(--gold);
+  color: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.brand-name { font-weight: 700; letter-spacing: 0.5px; font-size: 0.95rem; }
+.brand-sub { color: var(--muted); font-size: 0.72rem; letter-spacing: 1px; }
+.topbar-actions { display: flex; align-items: center; gap: 20px; }
+.manage-link { color: var(--text); text-decoration: none; font-size: 0.9rem; }
+.manage-link:hover { color: var(--gold); }
+.icon-btn {
+  background: var(--card); border: 1px solid var(--border); color: var(--text);
+  width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 1rem;
+}
+.hero {
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px;
+  padding: 90px 32px 60px; align-items: start;
+}
+.eyebrow {
+  color: var(--gold); font-size: 0.78rem; letter-spacing: 1.5px;
+  font-weight: 600; border-left: 2px solid var(--gold); padding-left: 12px;
+  margin-bottom: 20px;
+}
+.hero-text h1 { font-size: 3rem; line-height: 1.2; margin-bottom: 24px; }
+.hero-p { max-width: 480px; color: var(--muted); margin-bottom: 28px; }
+.checklist { list-style: none; padding: 0; margin: 0; display: flex; gap: 24px; flex-wrap: wrap; }
+.checklist li { color: var(--text); font-size: 0.9rem; font-weight: 500; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+.signup-card h2 { font-size: 1.5rem; margin-bottom: 6px; }
+form { display: flex; flex-direction: column; gap: 6px; margin-top: 20px; }
+label { font-size: 0.85rem; font-weight: 600; margin-top: 14px; }
+input {
+  background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; color: var(--text); font-size: 0.95rem;
+}
+input:focus { outline: none; border-color: var(--gold); }
+button[type="submit"] {
+  margin-top: 22px; background: var(--gold); color: #1a1408; border: none;
+  border-radius: 8px; padding: 14px; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: background 0.15s;
+}
+button[type="submit"]:hover { background: var(--gold-hover); }
+#status { margin-top: 12px; font-size: 0.88rem; min-height: 1.2em; }
+#status.error { color: #ff8a7a; }
+#status.success { color: #7fd99a; }
+.fineprint { color: var(--muted); font-size: 0.75rem; margin-top: 18px; }
+.steps-section { padding: 40px 32px 80px; }
+.steps-title { font-size: 2.1rem; margin: 8px 0 6px; }
+.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; }
+.step { border-top: 2px solid var(--border); padding-top: 20px; }
+.step-top { display: flex; justify-content: space-between; align-items: center; }
+.step-n { color: var(--gold); font-weight: 700; }
+.step h3 { font-size: 1.2rem; margin: 12px 0 8px; }
+.step p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+.site-footer { border-top: 1px solid var(--border); padding: 50px 0 24px; margin-top: 20px; }
+.footer-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 40px; }
+.brand-mini { font-weight: 700; margin-bottom: 12px; }
+.brand-mini::before { content: "●"; color: var(--gold); margin-right: 6px; }
+.footer-grid h4 { font-family: 'Inter', sans-serif; font-size: 0.95rem; margin-bottom: 14px; }
+.footer-list { padding-left: 18px; color: var(--muted); font-size: 0.88rem; }
+.footer-list li { margin-bottom: 6px; }
+.footer-grid a { color: var(--text); text-decoration: none; font-size: 0.9rem; }
+.footer-grid a:hover { color: var(--gold); }
+.disclaimer { color: var(--muted); font-size: 0.78rem; margin-top: 16px; line-height: 1.5; }
+.footer-bottom {
+  display: flex; justify-content: space-between; color: var(--muted);
+  font-size: 0.8rem; padding-top: 24px; margin-top: 24px; border-top: 1px solid var(--border);
+}
+body.light {
+  --bg: #faf8f4; --bg-soft: #ffffff; --card: #ffffff;
+  --border: rgba(0,0,0,0.08); --text: #1a1a1a; --muted: #6b6f76;
+}
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="wrap">
-      <span class="brand">🚨 Incident Tracker</span>
-      <span class="tag">Nationell täckning · alla 290 kommuner</span>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section class="hero">
-      <h1>Vet vad som händer i din kommun — innan du läser om det.</h1>
-      <p>
-        Incident Tracker bevakar polisens händelserapporter dygnet runt och
-        skickar ett e-postmeddelande när något nytt rapporteras nära dig.
-        Ingen app, inga notiser mitt i natten — bara relevant information.
-      </p>
-    </section>
-
-    <section class="card" id="signup">
-      <h2>Skapa din bevakning</h2>
-      <p class="muted">Fyll i uppgifterna nedan. Tar mindre än en minut.</p>
-
-      <form id="form">
-        <label for="name">Namn</label>
-        <input type="text" id="name" placeholder="Anna Andersson" required maxlength="100">
-
-        <label for="email">E-post</label>
-        <input type="email" id="email" placeholder="anna@exempel.se" required maxlength="255">
-
-        <label for="area">Kommun</label>
-        <input type="text" id="area-search" list="kommun-list" placeholder="Sök bland 290 kommuner…" required>
-        <datalist id="kommun-list"></datalist>
-
-        <button type="submit">Aktivera bevakning</button>
-      </form>
-
-      <p id="status"></p>
-
-      <p class="fineprint">
-        Genom att registrera dig godkänner du att vi lagrar din e-post för att
-        skicka dig händelserapporter. Du kan avregistrera dig när som helst.
-      </p>
-    </section>
-
-    <section class="steps">
-      <h2>Så fungerar det</h2>
-      <div class="steps-grid">
-        <div class="step">
-          <span class="n"></span>
-          <h3>Registrera dig</h3>
-          <p>Ange namn, e-post och din kommun. Ingen app och ingen inloggning.</p>
-        </div>
-        <div class="step">
-          <span class="n"></span>
-          <h3>Vi bevakar polisen.se</h3>
-          <p>Vi hämtar löpande händelserapporter från Polismyndigheten dygnet runt.</p>
-        </div>
-        <div class="step">
-          <span class="n"></span>
-          <h3>Du får e-post</h3>
-          <p>En sammanfattning skickas när något nytt rapporteras nära dig — annars tystnad.</p>
-        </div>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <div class="brand-icon">((•))</div>
+      <div>
+        <div class="brand-name">INCIDENT TRACKER</div>
+        <div class="brand-sub">SVERIGE · 290 KOMMUNER</div>
       </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap">
-      <p>Incident Tracker — bevakning baserad på öppna data från polisen.se.</p>
     </div>
-  </footer>
+    <div class="topbar-actions">
+      <a href="#" class="manage-link">Hantera prenumeration</a>
+      <button id="theme-toggle" class="icon-btn" aria-label="Växla tema">☀</button>
+    </div>
+  </div>
+</header>
 
-  <script src="kommuner.js"></script>
-  <script src="script.js"></script>
+<main class="wrap hero">
+  <div class="hero-text">
+    <div class="eyebrow">OBEROENDE BEVAKNING · HELA SVERIGE</div>
+    <h1>Händelser nära dig. <span class="gold">Utan bruset.</span></h1>
+    <p class="hero-p">
+      Vi följer polisens öppna händelserapporter och samlar det som är
+      relevant för din kommun i ett tydligt e-postmeddelande.
+    </p>
+    <ul class="checklist">
+      <li>✓ Alla 290 kommuner</li>
+      <li>✓ Du får E-post</li>
+      <li>✓ Avsluta när du vill</li>
+    </ul>
+  </div>
+
+  <div class="card signup-card" id="signup">
+    <div class="badge"><span class="shield">🛡</span> KOSTNADSFRI BEVAKNING</div>
+    <h2>Skapa din bevakning</h2>
+    <p class="muted">Fyll i uppgifterna nedan. Det tar mindre än en minut.</p>
+
+    <form id="form">
+      <label for="name">Namn</label>
+      <input type="text" id="name" placeholder="Anna Andersson" required maxlength="100">
+
+      <label for="email">E-post</label>
+      <input type="email" id="email" placeholder="anna@exempel.se" required maxlength="255">
+
+      <label for="area-search">Kommun</label>
+      <input type="text" id="area-search" list="kommun-list" placeholder="Sök bland 290 kommuner…" required>
+      <datalist id="kommun-list"></datalist>
+
+      <button type="submit">Aktivera bevakning →</button>
+    </form>
+
+    <p id="status"></p>
+
+    <p class="fineprint">
+      Genom att registrera dig godkänner du att vi lagrar din e-post för att
+      skicka dig händelserapporter. Du kan avregistrera dig när som helst.
+    </p>
+  </div>
+</main>
+
+<section class="steps-section wrap">
+  <div class="eyebrow">FRÅN RAPPORT TILL INKORG</div>
+  <h2 class="steps-title">Trygg överblick i tre steg</h2>
+  <p class="muted">Tre steg mellan dig och en tryggare vardag i din kommun.</p>
+
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-top"><span class="step-n"></span><span class="pin"></span></div>
+      <h3>Registrera dig</h3>
+      <p>Ange namn, e-post och din kommun. Ingen app och ingen inloggning.</p>
+    </div>
+    <div class="step">
+      <div class="step-top"><span class="step-n"></span><span class="pin"></span></div>
+      <h3>Vi bevakar polisen.se</h3>
+      <p>Vi hämtar löpande händelserapporter från Polismyndigheten dygnet runt.</p>
+    </div>
+    <div class="step">
+      <div class="step-top"><span class="step-n"></span><span class="pin"></span></div>
+      <h3>Du får e-post</h3>
+      <p>En sammanfattning skickas när något nytt rapporteras nära dig — annars tystnad.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="brand-mini">● Incident Tracker</div>
+      <p class="muted">
+        En oberoende bevakningstjänst för polisens händelserapporter.
+        Byggd i Sverige, för alla 290 kommuner.
+      </p>
+    </div>
+    <div>
+      <h4>Så fungerar det</h4>
+      <ol class="footer-list">
+        <li>Registrera dig med e-post och kommun.</li>
+        <li>Vi bevakar polisen.se dygnet runt.</li>
+        <li>Du får relevanta händelser via e-post.</li>
+      </ol>
+    </div>
+    <div>
+      <h4>Kontakt & juridik</h4>
+      <p>
+        <a href="https://www.linkedin.com/in/blakejoeseph/" target="_blank" rel="noopener">
+          Kontakta oss via LinkedIn
+        </a>
+      </p>
+      <p><a href="#">Hantera eller avregistrera prenumeration</a></p>
+      <p class="disclaimer">
+        Ansvarsfriskrivning: Incident Tracker är inte kopplad till
+        Polismyndigheten. Informationen hämtas från polisens öppna
+        händelserapporter och kan innehålla förseningar eller fel.
+        Vid pågående nödsituation, ring alltid 112.
+      </p>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Incident Tracker</span>
+    <span>Byggd med omsorg i Sverige · sv-SE</span>
+  </div>
+</footer>
+
+<script>
+// Alla 290 svenska kommuner
+const KOMMUNER = [
+  "Ale", "Alingsås", "Alvesta", "Aneby", "Arboga", "Arjeplog", "Arvidsjaur",
+  "Arvika", "Askersund", "Avesta", "Bengtsfors", "Berg", "Bjurholm", "Bjuv",
+  "Boden", "Bollebygd", "Bollnäs", "Borgholm", "Borlänge", "Borås", "Botkyrka",
+  "Boxholm", "Bromölla", "Bräcke", "Burlöv", "Båstad", "Dals-Ed", "Danderyd",
+  "Degerfors", "Dorotea", "Eda", "Ekerö", "Eksjö", "Emmaboda", "Enköping",
+  "Eskilstuna", "Eslöv", "Essunga", "Fagersta", "Falkenberg", "Falköping",
+  "Falun", "Filipstad", "Finspång", "Flen", "Forshaga", "Färgelanda",
+  "Gagnef", "Gislaved", "Gnesta", "Gnosjö", "Gotland", "Grums", "Grästorp",
+  "Gullspång", "Gällivare", "Gävle", "Göteborg", "Götene", "Habo", "Hagfors",
+  "Hallsberg", "Hallstahammar", "Halmstad", "Hammarö", "Haninge", "Haparanda",
+  "Heby", "Hedemora", "Helsingborg", "Herrljunga", "Hjo", "Hofors",
+  "Huddinge", "Hudiksvall", "Hultsfred", "Hylte", "Håbo", "Hällefors",
+  "Härjedalen", "Härnösand", "Härryda", "Hässleholm", "Höganäs", "Högsby",
+  "Hörby", "Höör", "Jokkmokk", "Järfälla", "Jönköping", "Kalix", "Kalmar",
+  "Karlsborg", "Karlshamn", "Karlskoga", "Karlskrona", "Karlstad", "Katrineholm",
+  "Kil", "Kinda", "Kiruna", "Klippan", "Knivsta", "Kramfors", "Kristianstad",
+  "Kristinehamn", "Krokom", "Kumla", "Kungsbacka", "Kungsör", "Kungälv",
+  "Kävlinge", "Köping", "Laholm", "Landskrona", "Laxå", "Lekeberg", "Leksand",
+  "Lerum", "Lessebo", "Lidingö", "Lidköping", "Lilla Edet", "Lindesberg",
+  "Linköping", "Ljungby", "Ljusdal", "Ljusnarsberg", "Lomma", "Ludvika",
+  "Luleå", "Lund", "Lycksele", "Lysekil", "Malmö", "Malung-Sälen", "Malå",
+  "Mariestad", "Mark", "Markaryd", "Mellerud", "Mjölby", "Mora", "Motala",
+  "Mullsjö", "Munkedal", "Munkfors", "Mölndal", "Mönsterås", "Mörbylånga",
+  "Nacka", "Nora", "Norberg", "Nordanstig", "Nordmaling", "Norrköping",
+  "Norrtälje", "Norsjö", "Nybro", "Nykvarn", "Nyköping", "Nynäshamn",
+  "Nässjö", "Ockelbo", "Olofström", "Orsa", "Orust", "Osby", "Oskarshamn",
+  "Ovanåker", "Oxelösund", "Pajala", "Partille", "Perstorp", "Piteå",
+  "Ragunda", "Robertsfors", "Ronneby", "Rättvik", "Sala", "Salem", "Sandviken",
+  "Sigtuna", "Simrishamn", "Sjöbo", "Skara", "Skellefteå", "Skinnskatteberg",
+  "Skurup", "Skövde", "Smedjebacken", "Sollefteå", "Sollentuna", "Solna",
+  "Sorsele", "Sotenäs", "Staffanstorp", "Stenungsund", "Stockholm",
+  "Storfors", "Storuman", "Strängnäs", "Strömstad", "Strömsund", "Sundbyberg",
+  "Sundsvall", "Sunne", "Surahammar", "Svalöv", "Svedala", "Svenljunga",
+  "Säffle", "Säter", "Sävsjö", "Söderhamn", "Söderköping", "Södertälje",
+  "Sölvesborg", "Tanum", "Tibro", "Tidaholm", "Tierp", "Timrå", "Tingsryd",
+  "Tjörn", "Tomelilla", "Torsby", "Torsås", "Tranemo", "Tranås", "Trelleborg",
+  "Trollhättan", "Trosa", "Tyresö", "Täby", "Töreboda", "Uddevalla",
+  "Ulricehamn", "Umeå", "Upplands Väsby", "Upplands-Bro", "Uppsala",
+  "Uppvidinge", "Vadstena", "Vaggeryd", "Valdemarsvik", "Vallentuna",
+  "Vansbro", "Vara", "Varberg", "Vaxholm", "Vellinge", "Vetlanda", "Vilhelmina",
+  "Vårgårda",
+  "Vimmerby", "Vindeln", "Vingåker", "Vänersborg", "Vännäs", "Värmdö",
+  "Värnamo", "Västervik", "Västerås", "Växjö", "Ydre", "Ystad", "Åmål",
+  "Ånge", "Åre", "Årjäng", "Åsele", "Åstorp", "Åtvidaberg", "Älmhult",
+  "Älvdalen", "Älvkarleby", "Älvsbyn", "Ängelholm", "Öckerö", "Ödeshög",
+  "Örebro", "Örkelljunga", "Örnsköldsvik", "Östersund", "Österåker",
+  "Östhammar", "Östra Göinge", "Överkalix", "Övertorneå"
+];
+
+const kommunList = document.getElementById("kommun-list");
+KOMMUNER.forEach((k) => {
+  const opt = document.createElement("option");
+  opt.value = k;
+  kommunList.appendChild(opt);
+});
+
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  document.body.classList.toggle("light");
+});
+
+const API_URL = "https://indicent-tracker-com.onrender.com";
+const form = document.getElementById("form");
+const status = document.getElementById("status");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const kommun = document.getElementById("area-search").value.trim();
+
+  status.className = "";
+  status.innerText = "";
+
+  if (!KOMMUNER.includes(kommun)) {
+    status.className = "error";
+    status.innerText = "Välj en kommun från listan.";
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/api/users`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, kommun }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      status.className = "error";
+      status.innerText = data.error || "Något gick fel.";
+      return;
+    }
+    status.className = "success";
+    status.innerText = "✅ Du är registrerad!";
+    form.reset();
+  } catch {
+    status.className = "error";
+    status.innerText = "❌ Kunde inte nå servern.";
+  }
+});
+</script>
 </body>
 </html>
