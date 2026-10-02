@@ -162,7 +162,7 @@
       ctx.fillRect(px - r, py - r, r * 2, r * 2);
     }
 
-    // Blåljus
+    // Guldpulser
     if (!reduced && now > nextPulse) {
       const [x, y] = pickCity();
       pulses.push({ x: x + (Math.random() - 0.5) * 0.15, y: y + (Math.random() - 0.5) * 0.15, t0: now });
