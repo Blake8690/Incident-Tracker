@@ -3,350 +3,376 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Incident Tracker — Händelser nära dig</title>
+<title>Incident Tracker — Polisens händelser i din kommun</title>
+<meta name="description" content="Få polisens händelserapporter för din kommun — live när något händer eller som en sammanfattning vid den tid du väljer. Gratis, för alla 290 kommuner.">
+<meta name="theme-color" content="#050a16">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #0b0d12;
-  --bg-soft: #10131a;
-  --card: #12151d;
-  --border: rgba(255,255,255,0.08);
-  --text: #f2f0ea;
-  --muted: #9aa1ac;
-  --gold: #c9a24a;
-  --gold-hover: #dcb662;
-  --radius: 14px;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', -apple-system, sans-serif;
-  line-height: 1.6;
-}
-h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; margin: 0; }
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
-.gold { color: var(--gold); }
-.muted { color: var(--muted); }
-.topbar { border-bottom: 1px solid var(--border); padding: 20px 0; }
-.topbar-inner { display: flex; align-items: center; justify-content: space-between; }
-.brand { display: flex; align-items: center; gap: 12px; }
-.brand-icon {
-  width: 44px; height: 44px; border-radius: 10px;
-  background: rgba(201,162,74,0.12); border: 1px solid var(--gold);
-  color: var(--gold); display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-}
-.brand-name { font-weight: 700; letter-spacing: 0.5px; font-size: 0.95rem; }
-.brand-sub { color: var(--muted); font-size: 0.72rem; letter-spacing: 1px; }
-.topbar-actions { display: flex; align-items: center; gap: 20px; }
-.manage-link { color: var(--text); text-decoration: none; font-size: 0.9rem; }
-.manage-link:hover { color: var(--gold); }
-.icon-btn {
-  background: var(--card); border: 1px solid var(--border); color: var(--text);
-  width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 1rem;
-}
-.hero {
-  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px;
-  padding: 90px 32px 60px; align-items: start;
-}
-.eyebrow {
-  color: var(--gold); font-size: 0.78rem; letter-spacing: 1.5px;
-  font-weight: 600; border-left: 2px solid var(--gold); padding-left: 12px;
-  margin-bottom: 20px;
-}
-.hero-text h1 { font-size: 3rem; line-height: 1.2; margin-bottom: 24px; }
-.hero-p { max-width: 480px; color: var(--muted); margin-bottom: 28px; }
-.checklist { list-style: none; padding: 0; margin: 0; display: flex; gap: 24px; flex-wrap: wrap; }
-.checklist li { color: var(--text); font-size: 0.9rem; font-weight: 500; }
-.card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 32px;
-}
-.badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 1px;
-  margin-bottom: 16px;
-}
-.signup-card h2 { font-size: 1.5rem; margin-bottom: 6px; }
-form { display: flex; flex-direction: column; gap: 6px; margin-top: 20px; }
-label { font-size: 0.85rem; font-weight: 600; margin-top: 14px; }
-input {
-  background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px;
-  padding: 12px 14px; color: var(--text); font-size: 0.95rem;
-}
-input:focus { outline: none; border-color: var(--gold); }
-button[type="submit"] {
-  margin-top: 22px; background: var(--gold); color: #1a1408; border: none;
-  border-radius: 8px; padding: 14px; font-size: 0.95rem; font-weight: 700;
-  cursor: pointer; transition: background 0.15s;
-}
-button[type="submit"]:hover { background: var(--gold-hover); }
-#status { margin-top: 12px; font-size: 0.88rem; min-height: 1.2em; }
-#status.error { color: #ff8a7a; }
-#status.success { color: #7fd99a; }
-.fineprint { color: var(--muted); font-size: 0.75rem; margin-top: 18px; }
-.steps-section { padding: 40px 32px 80px; }
-.steps-title { font-size: 2.1rem; margin: 8px 0 6px; }
-.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; }
-.step { border-top: 2px solid var(--border); padding-top: 20px; }
-.step-top { display: flex; justify-content: space-between; align-items: center; }
-.step-n { color: var(--gold); font-weight: 700; }
-.step h3 { font-size: 1.2rem; margin: 12px 0 8px; }
-.step p { color: var(--muted); font-size: 0.9rem; margin: 0; }
-.site-footer { border-top: 1px solid var(--border); padding: 50px 0 24px; margin-top: 20px; }
-.footer-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 40px; }
-.brand-mini { font-weight: 700; margin-bottom: 12px; }
-.brand-mini::before { content: "●"; color: var(--gold); margin-right: 6px; }
-.footer-grid h4 { font-family: 'Inter', sans-serif; font-size: 0.95rem; margin-bottom: 14px; }
-.footer-list { padding-left: 18px; color: var(--muted); font-size: 0.88rem; }
-.footer-list li { margin-bottom: 6px; }
-.footer-grid a { color: var(--text); text-decoration: none; font-size: 0.9rem; }
-.footer-grid a:hover { color: var(--gold); }
-.disclaimer { color: var(--muted); font-size: 0.78rem; margin-top: 16px; line-height: 1.5; }
-.footer-bottom {
-  display: flex; justify-content: space-between; color: var(--muted);
-  font-size: 0.8rem; padding-top: 24px; margin-top: 24px; border-top: 1px solid var(--border);
-}
-body.light {
-  --bg: #faf8f4; --bg-soft: #ffffff; --card: #ffffff;
-  --border: rgba(0,0,0,0.08); --text: #1a1a1a; --muted: #6b6f76;
-}
-@media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; }
-  .steps-grid { grid-template-columns: 1fr; }
-  .footer-grid { grid-template-columns: 1fr; }
-}
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="wrap topbar-inner">
-    <div class="brand">
-      <div class="brand-icon">((•))</div>
-      <div>
-        <div class="brand-name">INCIDENT TRACKER</div>
-        <div class="brand-sub">SVERIGE · 290 KOMMUNER</div>
-      </div>
-    </div>
-    <div class="topbar-actions">
-      <a href="#" class="manage-link">Hantera prenumeration</a>
-      <button id="theme-toggle" class="icon-btn" aria-label="Växla tema">☀</button>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9cc0ff"/><stop offset="1" stop-color="#2f6bff"/>
+    </linearGradient>
+    <symbol id="logo" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="4.5" fill="url(#logo-g)"/>
+      <path d="M16.5 16.5a10.6 10.6 0 0 0 0 15M31.5 16.5a10.6 10.6 0 0 1 0 15" stroke="url(#logo-g)" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path class="logo-outer" d="M11 11a18.4 18.4 0 0 0 0 26M37 11a18.4 18.4 0 0 1 0 26" stroke="url(#logo-g)" stroke-width="3" stroke-linecap="round" fill="none" opacity=".45"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-mark"><svg><use href="#logo"/></svg></div>
+  <div class="loader-text">INCIDENT TRACKER</div>
+</div>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="brand" aria-label="Incident Tracker, till toppen">
+      <span class="brand-mark"><svg><use href="#logo"/></svg></span>
+      <span class="brand-text">
+        <span class="brand-name">INCIDENT TRACKER</span>
+        <span class="brand-sub">SVERIGE · 290 KOMMUNER</span>
+      </span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#leverans">Leverans</a>
+      <a href="#steg">Så funkar det</a>
+      <a href="#kvalitet">Vad vi skickar</a>
+      <a href="#faq">Frågor</a>
+      <button class="nav-manage" data-open-manage>Hantera prenumeration</button>
+    </nav>
+    <div class="nav-actions">
+      <button id="theme-toggle" class="icon-btn" aria-label="Växla ljust/mörkt tema">☀</button>
+      <button class="btn btn-primary btn-sm" data-open-form>Starta bevakning <span aria-hidden="true">→</span></button>
+      <button class="burger" id="burger" aria-label="Meny" aria-expanded="false"><span></span><span></span></button>
     </div>
   </div>
 </header>
 
-<main class="wrap hero">
-  <div class="hero-text">
-    <div class="eyebrow">OBEROENDE BEVAKNING · HELA SVERIGE</div>
-    <h1>Händelser nära dig. <span class="gold">Utan bruset.</span></h1>
-    <p class="hero-p">
-      Vi följer polisens öppna händelserapporter och samlar det som är
-      relevant för din kommun i ett tydligt e-postmeddelande.
-    </p>
-    <ul class="checklist">
-      <li>✓ Alla 290 kommuner</li>
-      <li>✓ Du får E-post</li>
-      <li>✓ Avsluta när du vill</li>
-    </ul>
+<main id="top">
+  <section class="hero">
+    <canvas id="sweden" aria-hidden="true"></canvas>
+    <div class="hero-shade" aria-hidden="true"></div>
+
+    <div class="container hero-content">
+      <div class="eyebrow eyebrow-line">Oberoende bevakning · Hela Sverige</div>
+      <h1>Händelser nära dig.<br><span class="accent">Utan bruset.</span></h1>
+      <p class="lead">
+        Vi följer polisens öppna händelserapporter och skickar bara det som
+        rör din kommun — direkt när det händer, eller samlat vid den tid du väljer.
+      </p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" data-open-form>Starta bevakning <span aria-hidden="true">→</span></button>
+        <a class="btn btn-ghost" href="#leverans">Live eller sammanfattning <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+
+    <div class="container hero-bottom">
+      <dl class="stats">
+        <div class="stat"><dt><span data-count>290</span></dt><dd>Kommuner</dd></div>
+        <div class="stat"><dt><span data-count>24</span>/7</dt><dd>Bevakning av polisen.se</dd></div>
+        <div class="stat"><dt><span data-count>0</span> kr</dt><dd>Helt kostnadsfritt</dd></div>
+      </dl>
+      <a href="#leverans" class="scroll-hint">
+        <span class="scroll-circle" aria-hidden="true">↓</span>
+        Scrolla för att utforska
+      </a>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marquee"></div>
   </div>
 
-  <div class="card signup-card" id="signup">
-    <div class="badge"><span class="shield">🛡</span> KOSTNADSFRI BEVAKNING</div>
-    <h2>Skapa din bevakning</h2>
-    <p class="muted">Fyll i uppgifterna nedan. Det tar mindre än en minut.</p>
+  <section id="leverans" class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow eyebrow-line">Du bestämmer takten</div>
+        <h2>Live när det händer. <span class="accent">Eller en gång om dagen.</span></h2>
+        <p class="lead">Välj det som passar dig. Du kan byta när som helst via länken i varje mejl.</p>
+      </div>
 
-    <form id="form">
-      <label for="name">Namn</label>
-      <input type="text" id="name" placeholder="Anna Andersson" required maxlength="100">
+      <div class="modes">
+        <article class="mode tilt" data-3d>
+          <div class="mode-top">
+            <span class="pill pill-live"><span class="live-dot"></span> Live</span>
+            <span class="mode-meta">Inom några minuter</span>
+          </div>
+          <h3>Direkt när polisen publicerar</h3>
+          <p>Så fort polisen lägger upp något relevant för din kommun på polisen.se får du ett kort mejl. Inget händer — inget mejl.</p>
+          <div class="preview" aria-label="Exempel på live-notis">
+            <div class="notif">
+              <span class="notif-icon"><svg><use href="#logo"/></svg></span>
+              <div>
+                <div class="notif-head"><b>Incident Tracker</b><span>nu</span></div>
+                <div class="notif-title">Inbrott i Malmö</div>
+                <div class="notif-body">Inbrott i lägenhet på Möllevången under eftermiddagen…</div>
+              </div>
+            </div>
+            <span class="preview-label">Exempel</span>
+          </div>
+          <button class="btn btn-ghost btn-block" data-open-form data-mode="live">Välj live <span aria-hidden="true">→</span></button>
+        </article>
 
-      <label for="email">E-post</label>
-      <input type="email" id="email" placeholder="anna@exempel.se" required maxlength="255">
+        <article class="mode tilt featured" data-3d>
+          <div class="mode-top">
+            <span class="pill"><span aria-hidden="true">◷</span> Sammanfattning</span>
+            <span class="mode-meta">Valfri tid, 00:00–23:30</span>
+          </div>
+          <h3>Ett lugnt mejl, när du vill</h3>
+          <p>Allt från det senaste dygnet, samlat i ett mejl vid den tid du väljer. Perfekt kl. 07:00 till frukosten eller kl. 21:00 när dagen är slut.</p>
+          <div class="preview" aria-label="Exempel på sammanfattning">
+            <div class="digest">
+              <div class="digest-clock">
+                <button class="clock-btn" data-clock="-1" aria-label="Tidigare">‹</button>
+                <span id="clockDemo">21:00</span>
+                <button class="clock-btn" data-clock="1" aria-label="Senare">›</button>
+              </div>
+              <div class="digest-title">Dagens sammanfattning för Malmö</div>
+              <ul class="digest-list">
+                <li><span>16:42</span> Inbrott · Limhamn</li>
+                <li><span>18:05</span> Misshandel · Centrum</li>
+                <li><span>19:20</span> Stöld · Hyllie</li>
+              </ul>
+            </div>
+            <span class="preview-label">Exempel</span>
+          </div>
+          <button class="btn btn-primary btn-block" data-open-form data-mode="digest">Välj sammanfattning <span aria-hidden="true">→</span></button>
+        </article>
+      </div>
+    </div>
+  </section>
 
-      <label for="area-search">Kommun</label>
-      <input type="text" id="area-search" list="kommun-list" placeholder="Sök bland 290 kommuner…" required>
-      <datalist id="kommun-list"></datalist>
+  <section id="steg" class="section section-alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow eyebrow-line">Från rapport till inkorg</div>
+        <h2>Trygg överblick i tre steg.</h2>
+      </div>
+      <ol class="steps">
+        <li class="step" data-3d>
+          <span class="step-n">01</span>
+          <h3>Välj kommun och takt</h3>
+          <p>Kommun, live eller sammanfattning, och din e-post. Ingen app, inget lösenord.</p>
+        </li>
+        <li class="step" data-3d>
+          <span class="step-n">02</span>
+          <h3>Vi bevakar polisen.se</h3>
+          <p>Var femte minut, dygnet runt, läser vi polisens öppna händelserapporter och sorterar bort bruset.</p>
+        </li>
+        <li class="step" data-3d>
+          <span class="step-n">03</span>
+          <h3>Du får det som spelar roll</h3>
+          <p>Bara händelser i din kommun, tydligt formaterat för mobilen — med länk till polisens egen rapport.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
 
-      <button type="submit">Aktivera bevakning →</button>
-    </form>
+  <section id="kvalitet" class="section">
+    <div class="container split">
+      <div class="reveal">
+        <div class="eyebrow eyebrow-line">Kvalitet före kvantitet</div>
+        <h2>Vi läser allt. <span class="accent">Du får det viktiga.</span></h2>
+        <p class="lead">Polisen publicerar hundratals rapporter om dagen. De flesta handlar inte om din vardag. Vi filtrerar hårt så att varje mejl är värt att öppna.</p>
+      </div>
+      <div class="filter reveal">
+        <div class="filter-col">
+          <h3><span class="tick tick-yes">✓</span> Det här skickar vi</h3>
+          <ul>
+            <li>Inbrott, stöld och rån</li>
+            <li>Misshandel, hot och våld</li>
+            <li>Skottlossning och explosioner</li>
+            <li>Bränder och bombhot</li>
+            <li>Bedrägerier och skadegörelse</li>
+          </ul>
+        </div>
+        <div class="filter-col muted-col">
+          <h3><span class="tick tick-no">✕</span> Det här sorterar vi bort</h3>
+          <ul>
+            <li>Trafik- och fordonskontroller</li>
+            <li>Automatiska brandlarm</li>
+            <li>Polisens dag- och nattsammanfattningar</li>
+            <li>Händelser i andra kommuner</li>
+            <li>Sådant du redan fått</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <p id="status"></p>
+  <section id="faq" class="section section-alt">
+    <div class="container faq-wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow eyebrow-line">Vanliga frågor</div>
+        <h2>Bra att veta.</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Kan jag få notiser direkt i mobilen?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Ja — välj <b>Live</b> och slå på notiser för din mejlapp, så plingar det i mobilen så fort något händer. Mejlen är byggda för att läsas på mobilen.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Hur snabbt kommer en live-notis?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Vi kontrollerar polisen.se var femte minut. Oftast får du mejlet inom några minuter efter att polisen publicerat händelsen. Polisen publicerar själva ibland med fördröjning.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Vad händer om inget har hänt?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Med Live får du inga mejl alls — tystnad betyder lugnt. Med Sammanfattning får du ett kort mejl om att dagen varit lugn, så du vet att bevakningen fungerar.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Hur byter jag tid, kommun eller avslutar?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Varje mejl har en personlig länk längst ner. Har du inget mejl till hands kan du <button class="link-btn" data-open-manage>be om en ny länk här</button>.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Är ni kopplade till polisen?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Nej. Incident Tracker är en oberoende tjänst som använder polisens öppna händelserapporter. Vid nödsituation, ring alltid 112.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <p class="fineprint">
-      Genom att registrera dig godkänner du att vi lagrar din e-post för att
-      skicka dig händelserapporter. Du kan avregistrera dig när som helst.
-    </p>
-  </div>
+  <section class="cta-band">
+    <div class="container cta-inner reveal">
+      <h2>Börja bevaka din kommun idag.</h2>
+      <button class="btn btn-primary" data-open-form>Starta bevakning <span aria-hidden="true">→</span></button>
+    </div>
+  </section>
 </main>
 
-<section class="steps-section wrap">
-  <div class="eyebrow">FRÅN RAPPORT TILL INKORG</div>
-  <h2 class="steps-title">Trygg överblick i tre steg</h2>
-  <p class="muted">Tre steg mellan dig och en tryggare vardag i din kommun.</p>
-
-  <div class="steps-grid">
-    <div class="step">
-      <div class="step-top"><span class="step-n"></span><span class="pin"></span></div>
-      <h3>Registrera dig</h3>
-      <p>Ange namn, e-post och din kommun. Ingen app och ingen inloggning.</p>
-    </div>
-    <div class="step">
-      <div class="step-top"><span class="step-n"></span><span class="pin"></span></div>
-      <h3>Vi bevakar polisen.se</h3>
-      <p>Vi hämtar löpande händelserapporter från Polismyndigheten dygnet runt.</p>
-    </div>
-    <div class="step">
-      <div class="step-top"><span class="step-n"></span><span class="pin"></span></div>
-      <h3>Du får e-post</h3>
-      <p>En sammanfattning skickas när något nytt rapporteras nära dig — annars tystnad.</p>
-    </div>
-  </div>
-</section>
-
-<footer class="site-footer">
-  <div class="wrap footer-grid">
+<footer class="footer">
+  <div class="container footer-grid">
     <div>
-      <div class="brand-mini">● Incident Tracker</div>
-      <p class="muted">
-        En oberoende bevakningstjänst för polisens händelserapporter.
-        Byggd i Sverige, för alla 290 kommuner.
-      </p>
+      <a href="#top" class="brand">
+        <span class="brand-mark"><svg><use href="#logo"/></svg></span>
+        <span class="brand-name">INCIDENT TRACKER</span>
+      </a>
+      <p class="footer-about">En oberoende bevakningstjänst för polisens händelserapporter. Byggd i Sverige, för alla 290 kommuner.</p>
     </div>
     <div>
-      <h4>Så fungerar det</h4>
-      <ol class="footer-list">
-        <li>Registrera dig med e-post och kommun.</li>
-        <li>Vi bevakar polisen.se dygnet runt.</li>
-        <li>Du får relevanta händelser via e-post.</li>
-      </ol>
+      <h4>Tjänsten</h4>
+      <ul class="footer-list">
+        <li><a href="#leverans">Live eller sammanfattning</a></li>
+        <li><a href="#kvalitet">Vad vi skickar</a></li>
+        <li><a href="#faq">Vanliga frågor</a></li>
+      </ul>
     </div>
     <div>
       <h4>Kontakt & juridik</h4>
-      <p>
-        <a href="https://www.linkedin.com/in/blakejoeseph/" target="_blank" rel="noopener">
-          Kontakta oss via LinkedIn
-        </a>
-      </p>
-      <p><a href="#">Hantera eller avregistrera prenumeration</a></p>
+      <ul class="footer-list">
+        <li><a href="https://www.linkedin.com/in/blakejoeseph/" target="_blank" rel="noopener">Kontakta oss via LinkedIn</a></li>
+        <li><button class="link-btn" data-open-manage>Hantera eller avregistrera prenumeration</button></li>
+      </ul>
       <p class="disclaimer">
-        Ansvarsfriskrivning: Incident Tracker är inte kopplad till
-        Polismyndigheten. Informationen hämtas från polisens öppna
-        händelserapporter och kan innehålla förseningar eller fel.
+        Incident Tracker är inte kopplad till Polismyndigheten. Informationen hämtas
+        från polisens öppna händelserapporter och kan innehålla förseningar eller fel.
         Vid pågående nödsituation, ring alltid 112.
       </p>
     </div>
   </div>
-  <div class="wrap footer-bottom">
-    <span>© 2026 Incident Tracker</span>
-    <span>Byggd med omsorg i Sverige · sv-SE</span>
+  <div class="container footer-bottom">
+    <span>© <span id="year">2026</span> Incident Tracker</span>
+    <span>Byggd med omsorg i Sverige</span>
   </div>
 </footer>
 
-<script>
-// Alla 290 svenska kommuner
-const KOMMUNER = [
-  "Ale", "Alingsås", "Alvesta", "Aneby", "Arboga", "Arjeplog", "Arvidsjaur",
-  "Arvika", "Askersund", "Avesta", "Bengtsfors", "Berg", "Bjurholm", "Bjuv",
-  "Boden", "Bollebygd", "Bollnäs", "Borgholm", "Borlänge", "Borås", "Botkyrka",
-  "Boxholm", "Bromölla", "Bräcke", "Burlöv", "Båstad", "Dals-Ed", "Danderyd",
-  "Degerfors", "Dorotea", "Eda", "Ekerö", "Eksjö", "Emmaboda", "Enköping",
-  "Eskilstuna", "Eslöv", "Essunga", "Fagersta", "Falkenberg", "Falköping",
-  "Falun", "Filipstad", "Finspång", "Flen", "Forshaga", "Färgelanda",
-  "Gagnef", "Gislaved", "Gnesta", "Gnosjö", "Gotland", "Grums", "Grästorp",
-  "Gullspång", "Gällivare", "Gävle", "Göteborg", "Götene", "Habo", "Hagfors",
-  "Hallsberg", "Hallstahammar", "Halmstad", "Hammarö", "Haninge", "Haparanda",
-  "Heby", "Hedemora", "Helsingborg", "Herrljunga", "Hjo", "Hofors",
-  "Huddinge", "Hudiksvall", "Hultsfred", "Hylte", "Håbo", "Hällefors",
-  "Härjedalen", "Härnösand", "Härryda", "Hässleholm", "Höganäs", "Högsby",
-  "Hörby", "Höör", "Jokkmokk", "Järfälla", "Jönköping", "Kalix", "Kalmar",
-  "Karlsborg", "Karlshamn", "Karlskoga", "Karlskrona", "Karlstad", "Katrineholm",
-  "Kil", "Kinda", "Kiruna", "Klippan", "Knivsta", "Kramfors", "Kristianstad",
-  "Kristinehamn", "Krokom", "Kumla", "Kungsbacka", "Kungsör", "Kungälv",
-  "Kävlinge", "Köping", "Laholm", "Landskrona", "Laxå", "Lekeberg", "Leksand",
-  "Lerum", "Lessebo", "Lidingö", "Lidköping", "Lilla Edet", "Lindesberg",
-  "Linköping", "Ljungby", "Ljusdal", "Ljusnarsberg", "Lomma", "Ludvika",
-  "Luleå", "Lund", "Lycksele", "Lysekil", "Malmö", "Malung-Sälen", "Malå",
-  "Mariestad", "Mark", "Markaryd", "Mellerud", "Mjölby", "Mora", "Motala",
-  "Mullsjö", "Munkedal", "Munkfors", "Mölndal", "Mönsterås", "Mörbylånga",
-  "Nacka", "Nora", "Norberg", "Nordanstig", "Nordmaling", "Norrköping",
-  "Norrtälje", "Norsjö", "Nybro", "Nykvarn", "Nyköping", "Nynäshamn",
-  "Nässjö", "Ockelbo", "Olofström", "Orsa", "Orust", "Osby", "Oskarshamn",
-  "Ovanåker", "Oxelösund", "Pajala", "Partille", "Perstorp", "Piteå",
-  "Ragunda", "Robertsfors", "Ronneby", "Rättvik", "Sala", "Salem", "Sandviken",
-  "Sigtuna", "Simrishamn", "Sjöbo", "Skara", "Skellefteå", "Skinnskatteberg",
-  "Skurup", "Skövde", "Smedjebacken", "Sollefteå", "Sollentuna", "Solna",
-  "Sorsele", "Sotenäs", "Staffanstorp", "Stenungsund", "Stockholm",
-  "Storfors", "Storuman", "Strängnäs", "Strömstad", "Strömsund", "Sundbyberg",
-  "Sundsvall", "Sunne", "Surahammar", "Svalöv", "Svedala", "Svenljunga",
-  "Säffle", "Säter", "Sävsjö", "Söderhamn", "Söderköping", "Södertälje",
-  "Sölvesborg", "Tanum", "Tibro", "Tidaholm", "Tierp", "Timrå", "Tingsryd",
-  "Tjörn", "Tomelilla", "Torsby", "Torsås", "Tranemo", "Tranås", "Trelleborg",
-  "Trollhättan", "Trosa", "Tyresö", "Täby", "Töreboda", "Uddevalla",
-  "Ulricehamn", "Umeå", "Upplands Väsby", "Upplands-Bro", "Uppsala",
-  "Uppvidinge", "Vadstena", "Vaggeryd", "Valdemarsvik", "Vallentuna",
-  "Vansbro", "Vara", "Varberg", "Vaxholm", "Vellinge", "Vetlanda", "Vilhelmina",
-  "Vårgårda",
-  "Vimmerby", "Vindeln", "Vingåker", "Vänersborg", "Vännäs", "Värmdö",
-  "Värnamo", "Västervik", "Västerås", "Växjö", "Ydre", "Ystad", "Åmål",
-  "Ånge", "Åre", "Årjäng", "Åsele", "Åstorp", "Åtvidaberg", "Älmhult",
-  "Älvdalen", "Älvkarleby", "Älvsbyn", "Ängelholm", "Öckerö", "Ödeshög",
-  "Örebro", "Örkelljunga", "Örnsköldsvik", "Östersund", "Österåker",
-  "Östhammar", "Östra Göinge", "Överkalix", "Övertorneå"
-];
+<!-- Registrering i steg -->
+<div class="modal" id="signupModal" role="dialog" aria-modal="true" aria-labelledby="signupTitle" hidden>
+  <div class="modal-box">
+    <button class="modal-close" data-close aria-label="Stäng">✕</button>
+    <div class="modal-head">
+      <span class="pill"><span aria-hidden="true">🛡</span> Kostnadsfri bevakning</span>
+      <h2 id="signupTitle">Skapa din bevakning</h2>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <ol class="progress-labels"><li class="active">Kommun</li><li>Leverans</li><li>Kontakt</li></ol>
+    </div>
 
-const kommunList = document.getElementById("kommun-list");
-KOMMUNER.forEach((k) => {
-  const opt = document.createElement("option");
-  opt.value = k;
-  kommunList.appendChild(opt);
-});
+    <form id="signupForm" novalidate>
+      <div class="form-step" data-step="0">
+        <label for="kommun">Vilken kommun vill du bevaka?</label>
+        <input type="text" id="kommun" list="kommun-list" placeholder="Sök bland 290 kommuner…" autocomplete="off" required>
+        <datalist id="kommun-list"></datalist>
+        <div class="chips" aria-label="Populära kommuner">
+          <button type="button" class="chip" data-kommun>Stockholm</button>
+          <button type="button" class="chip" data-kommun>Göteborg</button>
+          <button type="button" class="chip" data-kommun>Malmö</button>
+          <button type="button" class="chip" data-kommun>Uppsala</button>
+        </div>
+      </div>
 
-document.getElementById("theme-toggle").addEventListener("click", () => {
-  document.body.classList.toggle("light");
-});
+      <div class="form-step" data-step="1" hidden>
+        <span class="label">Hur vill du bli uppdaterad?</span>
+        <div class="choice-group" role="radiogroup">
+          <label class="choice">
+            <input type="radio" name="mode" value="live" checked>
+            <span class="choice-body">
+              <span class="choice-title"><span class="live-dot"></span> Live</span>
+              <span class="choice-text">Ett mejl direkt när polisen publicerar något.</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="mode" value="digest">
+            <span class="choice-body">
+              <span class="choice-title">◷ Sammanfattning</span>
+              <span class="choice-text">Ett mejl om dagen vid den tid du väljer.</span>
+            </span>
+          </label>
+        </div>
+        <div class="time-row" id="timeRow" hidden>
+          <label for="digestTime">Skicka sammanfattningen kl.</label>
+          <select id="digestTime"></select>
+        </div>
+      </div>
 
-const API_URL = "https://indicent-tracker-com.onrender.com";
-const form = document.getElementById("form");
-const status = document.getElementById("status");
+      <div class="form-step" data-step="2" hidden>
+        <label for="name">Namn</label>
+        <input type="text" id="name" placeholder="Anna Andersson" maxlength="100" autocomplete="name" required>
+        <label for="email">E-post</label>
+        <input type="email" id="email" placeholder="anna@exempel.se" maxlength="255" autocomplete="email" required>
+        <p class="fineprint">Genom att registrera dig godkänner du att vi lagrar dina uppgifter för att skicka händelserapporter. Du kan avregistrera dig när som helst.</p>
+      </div>
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim().toLowerCase();
-  const kommun = document.getElementById("area-search").value.trim();
+      <p class="form-error" id="formError" role="alert"></p>
 
-  status.className = "";
-  status.innerText = "";
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" id="formBack" hidden>← Tillbaka</button>
+        <button type="submit" class="btn btn-primary" id="formNext">Nästa →</button>
+      </div>
+    </form>
 
-  if (!KOMMUNER.includes(kommun)) {
-    status.className = "error";
-    status.innerText = "Välj en kommun från listan.";
-    return;
-  }
+    <div class="form-done" id="formDone" hidden>
+      <div class="done-mark"><svg><use href="#logo"/></svg></div>
+      <h3>Din bevakning är igång.</h3>
+      <p id="doneText"></p>
+    </div>
+  </div>
+</div>
 
-  try {
-    const res = await fetch(`${API_URL}/api/users`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, kommun }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      status.className = "error";
-      status.innerText = data.error || "Något gick fel.";
-      return;
-    }
-    status.className = "success";
-    status.innerText = "✅ Du är registrerad!";
-    form.reset();
-  } catch {
-    status.className = "error";
-    status.innerText = "❌ Kunde inte nå servern.";
-  }
-});
-</script>
+<!-- Be om hanteringslänk -->
+<div class="modal" id="manageModal" role="dialog" aria-modal="true" aria-labelledby="manageTitle" hidden>
+  <div class="modal-box modal-small">
+    <button class="modal-close" data-close aria-label="Stäng">✕</button>
+    <h2 id="manageTitle">Hantera prenumeration</h2>
+    <p class="muted">Ange din e-post så mejlar vi en personlig länk där du kan byta kommun, leveranssätt eller avsluta.</p>
+    <form id="manageForm" novalidate>
+      <label for="manageEmail">E-post</label>
+      <input type="email" id="manageEmail" placeholder="anna@exempel.se" autocomplete="email" required>
+      <p class="form-error" id="manageError" role="alert"></p>
+      <button type="submit" class="btn btn-primary btn-block">Skicka länk →</button>
+    </form>
+    <p class="form-success" id="manageDone" hidden>Om adressen finns registrerad skickar vi en länk inom några minuter. Kolla även skräpposten.</p>
+  </div>
+</div>
+
+<script src="kommuner.js"></script>
+<script src="map.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
