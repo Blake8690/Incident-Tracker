@@ -34,15 +34,13 @@ h1, h2, h3 { color: var(--text); font-weight: 800; letter-spacing: -0.035em; lin
 h1 { font-size: clamp(2.7rem, 6.6vw, 5.6rem); }
 h2 { font-size: clamp(2rem, 4.4vw, 3.4rem); }
 h3 { font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.25; }
-.accent, .accent .word > span { color: var(--gold); }
+.accent, .accent .word > span { color: var(--text); }
 .lead { font-size: 1.15rem; max-width: 30em; }
 .muted { color: var(--muted); }
 .eyebrow {
   font-size: 0.74rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 22px;
+  color: var(--text); margin-bottom: 22px;
 }
-.eyebrow-line { display: flex; align-items: center; gap: 14px; }
-.eyebrow-line::before { content: ""; width: 28px; height: 2px; background: var(--gold); border-radius: 2px; }
 
 /* Knappar */
 .btn {
@@ -57,7 +55,7 @@ h3 { font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.25; }
 .btn-sm { padding: 11px 18px; font-size: 0.9rem; }
 .btn-block { width: 100%; }
 .btn:disabled { opacity: .6; cursor: wait; }
-.link-btn { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+.link-btn { color: var(--text); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 
 /* Laddningsskärm */
 .loader {
@@ -81,7 +79,7 @@ h3 { font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.25; }
 .brand-mark { width: 42px; height: 42px; display: block; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.2; white-space: nowrap; }
 .brand-name { font-weight: 800; letter-spacing: .06em; font-size: .95rem; }
-.brand-sub { font-size: .66rem; letter-spacing: .4em; color: var(--gold); font-weight: 700; }
+.brand-sub { font-size: .66rem; letter-spacing: .4em; color: var(--text); font-weight: 700; }
 .nav-links { display: flex; align-items: center; gap: 26px; margin-left: auto; font-size: .92rem; font-weight: 600; white-space: nowrap; }
 .nav-links a, .nav-manage { color: var(--muted); transition: color .2s; }
 .nav-links a:hover, .nav-manage:hover { color: var(--text); }
@@ -145,8 +143,8 @@ h3 { font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.25; }
 .mode h3 { font-size: 1.6rem; }
 .pill {
   display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 99px;
-  font-size: .78rem; font-weight: 700; letter-spacing: .04em; color: var(--gold);
-  background: rgba(227, 178, 60, .1); border: 1px solid rgba(227, 178, 60, .3);
+  font-size: .78rem; font-weight: 700; letter-spacing: .04em; color: var(--text);
+  background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .14);
 }
 .pill-live { color: #ff8a95; background: rgba(255, 77, 94, .1); border-color: rgba(255, 77, 94, .3); }
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--live); display: inline-block; animation: live 1.8s infinite; }
@@ -172,11 +170,11 @@ h3 { font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.25; }
 .notif-body { color: #b5b5b5; }
 .digest { width: 100%; max-width: 360px; color: #ddd; }
 .digest-clock { display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 2.6rem; font-weight: 800; letter-spacing: -.03em; color: #fff; font-variant-numeric: tabular-nums; }
-.clock-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(227, 178, 60, .4); font-size: 1.2rem; color: var(--gold); line-height: 1; }
+.clock-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(227, 178, 60, .4); font-size: 1.2rem; color: var(--text); line-height: 1; }
 .clock-btn:hover { background: rgba(227, 178, 60, .15); }
 .digest-title { text-align: center; font-weight: 700; font-size: .9rem; margin: 6px 0 14px; color: #b5b5b5; }
 .digest-list li { display: flex; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); font-size: .88rem; }
-.digest-list span { color: var(--gold); font-variant-numeric: tabular-nums; }
+.digest-list span { color: var(--muted); font-variant-numeric: tabular-nums; }
 
 /* FAQ */
 .faq-wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; align-items: start; }
@@ -194,7 +192,7 @@ h3 { font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.25; }
 .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
 .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
 .footer-links a, .footer-links .link-btn { color: var(--text); text-decoration: none; font-weight: 600; }
-.footer-links a:hover, .footer-links .link-btn:hover { color: var(--gold); }
+.footer-links a:hover, .footer-links .link-btn:hover { color: var(--muted); }
 .footer-bottom { display: flex; justify-content: space-between; gap: 12px; margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: .8rem; }
 
 /* Modal och formulär */
