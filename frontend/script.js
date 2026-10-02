@@ -9,19 +9,6 @@ if (motionOK) root.classList.add("motion");
 // Väck Render-servern direkt, så att registreringen går snabbt sen
 fetch(`${API_URL}/`).catch(() => {});
 
-// ---------- Tema ----------
-const themeBtn = document.getElementById("theme-toggle");
-const setTheme = t => {
-  root.dataset.theme = t;
-  if (themeBtn) themeBtn.textContent = t === "light" ? "☾" : "☀";
-};
-try { setTheme(localStorage.getItem("theme") || "dark"); } catch { setTheme("dark"); }
-themeBtn?.addEventListener("click", () => {
-  const next = root.dataset.theme === "light" ? "dark" : "light";
-  setTheme(next);
-  try { localStorage.setItem("theme", next); } catch {}
-});
-
 // ---------- Laddningsskärm ----------
 const loaderDone = new Promise(resolve => {
   const loader = document.getElementById("loader");
@@ -57,14 +44,6 @@ navLinks?.querySelectorAll("a, button").forEach(a => a.addEventListener("click",
   navLinks.classList.remove("open");
   burger.setAttribute("aria-expanded", false);
 }));
-
-// ---------- Löpband ----------
-const marquee = document.getElementById("marquee");
-if (marquee && typeof KOMMUNER !== "undefined") {
-  const pick = [...KOMMUNER].sort(() => Math.random() - 0.5).slice(0, 40);
-  const html = pick.map(k => `<span>${k}</span>`).join("");
-  marquee.innerHTML = html + html; // dubbelt för sömlös loop
-}
 
 // ---------- Scroll-animationer ----------
 const reveal = new IntersectionObserver(entries => entries.forEach(e => {

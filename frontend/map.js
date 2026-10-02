@@ -1,5 +1,5 @@
 // Hero: Sverige som lutad 3D-punktkarta i natten. Fjällen reser sig i väster,
-// städerna lyser och blåljus pulserar där det bor folk. Dekorativt — inga
+// städerna lyser och guldpulser visar där det bor folk. Dekorativt — inga
 // riktiga händelser visas här.
 (() => {
   const canvas = document.getElementById("sweden");
@@ -136,7 +136,7 @@
     // Stjärnor
     for (const [sx, sy, r, ph] of stars) {
       ctx.globalAlpha = (0.25 + 0.35 * Math.sin(now * 0.001 + ph) ** 2) * fade;
-      ctx.fillStyle = "#cfe0ff";
+      ctx.fillStyle = "#e8e8e8";
       ctx.fillRect(sx * W, sy * H, r, r);
     }
 
@@ -145,7 +145,7 @@
       const [px, py, depth, k] = project(x, y, z);
       const near = Math.max(0, Math.min(1, (6 - depth) / 12));
       ctx.globalAlpha = (0.3 + near * 0.5 + z * 0.4) * fade;
-      ctx.fillStyle = z > 0.25 ? "#d6e4ff" : "#6f98ea";
+      ctx.fillStyle = z > 0.25 ? "#f1efe8" : "#7a7a7a";
       const s = (1.3 + z * 1.4) * k * (mobile ? 1 : 1.25);
       ctx.fillRect(px - s / 2, py - s / 2, s, s);
     }
@@ -155,8 +155,8 @@
       const [px, py, , k] = project(x, y, 0.02);
       const r = (3 + w * 1.2) * k;
       const g = ctx.createRadialGradient(px, py, 0, px, py, r);
-      g.addColorStop(0, "rgba(255, 214, 150, 0.9)");
-      g.addColorStop(1, "rgba(255, 190, 110, 0)");
+      g.addColorStop(0, "rgba(255, 255, 255, 0.7)");
+      g.addColorStop(1, "rgba(255, 255, 255, 0)");
       ctx.globalAlpha = 0.55 * fade;
       ctx.fillStyle = g;
       ctx.fillRect(px - r, py - r, r * 2, r * 2);
@@ -175,7 +175,7 @@
       const a = (1 - t) * fade;
       // Ring på marken
       ctx.globalAlpha = a * 0.9;
-      ctx.strokeStyle = "#5b95ff";
+      ctx.strokeStyle = "#e3b23c";
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       const R = 0.08 + t * 0.55;
@@ -189,16 +189,16 @@
       const [bx, by] = project(p.x, p.y, 0);
       const [, ty2] = project(p.x, p.y, 0.9 * (1 - t * 0.4));
       const beam = ctx.createLinearGradient(bx, by, bx, ty2);
-      beam.addColorStop(0, "rgba(120, 170, 255, 0.95)");
-      beam.addColorStop(1, "rgba(120, 170, 255, 0)");
+      beam.addColorStop(0, "rgba(242, 205, 107, 0.95)");
+      beam.addColorStop(1, "rgba(242, 205, 107, 0)");
       ctx.globalAlpha = a;
       ctx.strokeStyle = beam;
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx, ty2); ctx.stroke();
       // Kärna
       const glow = ctx.createRadialGradient(bx, by, 0, bx, by, 14);
-      glow.addColorStop(0, "rgba(190, 215, 255, 1)");
-      glow.addColorStop(1, "rgba(79, 140, 255, 0)");
+      glow.addColorStop(0, "rgba(255, 236, 180, 1)");
+      glow.addColorStop(1, "rgba(227, 178, 60, 0)");
       ctx.fillStyle = glow;
       ctx.fillRect(bx - 14, by - 14, 28, 28);
     }

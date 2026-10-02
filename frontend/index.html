@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Incident Tracker — Polisens händelser i din kommun</title>
 <meta name="description" content="Få polisens händelserapporter för din kommun — live när något händer eller som en sammanfattning vid den tid du väljer. Gratis, för alla 290 kommuner.">
-<meta name="theme-color" content="#050a16">
+<meta name="theme-color" content="#0a0a0a">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,42 +14,26 @@
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9cc0ff"/><stop offset="1" stop-color="#2f6bff"/>
-    </linearGradient>
-    <symbol id="logo" viewBox="0 0 48 48">
-      <circle cx="24" cy="24" r="4.5" fill="url(#logo-g)"/>
-      <path d="M16.5 16.5a10.6 10.6 0 0 0 0 15M31.5 16.5a10.6 10.6 0 0 1 0 15" stroke="url(#logo-g)" stroke-width="3" stroke-linecap="round" fill="none"/>
-      <path class="logo-outer" d="M11 11a18.4 18.4 0 0 0 0 26M37 11a18.4 18.4 0 0 1 0 26" stroke="url(#logo-g)" stroke-width="3" stroke-linecap="round" fill="none" opacity=".45"/>
-    </symbol>
-  </defs>
-</svg>
-
 <div class="loader" id="loader" aria-hidden="true">
-  <div class="loader-mark"><svg><use href="#logo"/></svg></div>
+  <img class="loader-mark" src="logo.svg" alt="">
   <div class="loader-text">INCIDENT TRACKER</div>
 </div>
 
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#top" class="brand" aria-label="Incident Tracker, till toppen">
-      <span class="brand-mark"><svg><use href="#logo"/></svg></span>
+      <img class="brand-mark" src="logo.svg" alt="" width="42" height="42">
       <span class="brand-text">
         <span class="brand-name">INCIDENT TRACKER</span>
-        <span class="brand-sub">SVERIGE · 290 KOMMUNER</span>
+        <span class="brand-sub">SVERIGE</span>
       </span>
     </a>
     <nav class="nav-links" id="navLinks">
       <a href="#leverans">Leverans</a>
-      <a href="#steg">Så funkar det</a>
-      <a href="#kvalitet">Vad vi skickar</a>
       <a href="#faq">Frågor</a>
       <button class="nav-manage" data-open-manage>Hantera prenumeration</button>
     </nav>
     <div class="nav-actions">
-      <button id="theme-toggle" class="icon-btn" aria-label="Växla ljust/mörkt tema">☀</button>
       <button class="btn btn-primary btn-sm" data-open-form>Starta bevakning <span aria-hidden="true">→</span></button>
       <button class="burger" id="burger" aria-label="Meny" aria-expanded="false"><span></span><span></span></button>
     </div>
@@ -65,20 +49,20 @@
       <div class="eyebrow eyebrow-line">Oberoende bevakning · Hela Sverige</div>
       <h1>Händelser nära dig.<br><span class="accent">Utan bruset.</span></h1>
       <p class="lead">
-        Vi följer polisens öppna händelserapporter och skickar bara det som
-        rör din kommun — direkt när det händer, eller samlat vid den tid du väljer.
+        Polisens händelser i din kommun — direkt när det händer,
+        eller samlat vid den tid du väljer.
       </p>
       <div class="hero-ctas">
         <button class="btn btn-primary" data-open-form>Starta bevakning <span aria-hidden="true">→</span></button>
-        <a class="btn btn-ghost" href="#leverans">Live eller sammanfattning <span aria-hidden="true">↓</span></a>
+        <a class="btn btn-ghost" href="#leverans">Så funkar det <span aria-hidden="true">↓</span></a>
       </div>
     </div>
 
     <div class="container hero-bottom">
       <dl class="stats">
         <div class="stat"><dt><span data-count>290</span></dt><dd>Kommuner</dd></div>
-        <div class="stat"><dt><span data-count>24</span>/7</dt><dd>Bevakning av polisen.se</dd></div>
-        <div class="stat"><dt><span data-count>0</span> kr</dt><dd>Helt kostnadsfritt</dd></div>
+        <div class="stat"><dt><span data-count>24</span>/7</dt><dd>Bevakning</dd></div>
+        <div class="stat"><dt><span data-count>0</span> kr</dt><dd>Kostnadsfritt</dd></div>
       </dl>
       <a href="#leverans" class="scroll-hint">
         <span class="scroll-circle" aria-hidden="true">↓</span>
@@ -87,16 +71,11 @@
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track" id="marquee"></div>
-  </div>
-
   <section id="leverans" class="section">
     <div class="container">
       <div class="section-head reveal">
         <div class="eyebrow eyebrow-line">Du bestämmer takten</div>
-        <h2>Live när det händer. <span class="accent">Eller en gång om dagen.</span></h2>
-        <p class="lead">Välj det som passar dig. Du kan byta när som helst via länken i varje mejl.</p>
+        <h2>Live eller <span class="accent">en gång om dagen.</span></h2>
       </div>
 
       <div class="modes">
@@ -106,10 +85,10 @@
             <span class="mode-meta">Inom några minuter</span>
           </div>
           <h3>Direkt när polisen publicerar</h3>
-          <p>Så fort polisen lägger upp något relevant för din kommun på polisen.se får du ett kort mejl. Inget händer — inget mejl.</p>
+          <p>Ett kort mejl så fort något händer i din kommun. Inget händer — inget mejl.</p>
           <div class="preview" aria-label="Exempel på live-notis">
             <div class="notif">
-              <span class="notif-icon"><svg><use href="#logo"/></svg></span>
+              <img class="notif-icon" src="logo.svg" alt="">
               <div>
                 <div class="notif-head"><b>Incident Tracker</b><span>nu</span></div>
                 <div class="notif-title">Inbrott i Malmö</div>
@@ -124,10 +103,10 @@
         <article class="mode tilt featured" data-3d>
           <div class="mode-top">
             <span class="pill"><span aria-hidden="true">◷</span> Sammanfattning</span>
-            <span class="mode-meta">Valfri tid, 00:00–23:30</span>
+            <span class="mode-meta">Valfri tid</span>
           </div>
-          <h3>Ett lugnt mejl, när du vill</h3>
-          <p>Allt från det senaste dygnet, samlat i ett mejl vid den tid du väljer. Perfekt kl. 07:00 till frukosten eller kl. 21:00 när dagen är slut.</p>
+          <h3>Ett mejl, när du vill</h3>
+          <p>Allt från det senaste dygnet, samlat vid den tid du väljer — till exempel kl. 21:00.</p>
           <div class="preview" aria-label="Exempel på sammanfattning">
             <div class="digest">
               <div class="digest-clock">
@@ -150,64 +129,6 @@
     </div>
   </section>
 
-  <section id="steg" class="section section-alt">
-    <div class="container">
-      <div class="section-head reveal">
-        <div class="eyebrow eyebrow-line">Från rapport till inkorg</div>
-        <h2>Trygg överblick i tre steg.</h2>
-      </div>
-      <ol class="steps">
-        <li class="step" data-3d>
-          <span class="step-n">01</span>
-          <h3>Välj kommun och takt</h3>
-          <p>Kommun, live eller sammanfattning, och din e-post. Ingen app, inget lösenord.</p>
-        </li>
-        <li class="step" data-3d>
-          <span class="step-n">02</span>
-          <h3>Vi bevakar polisen.se</h3>
-          <p>Var femte minut, dygnet runt, läser vi polisens öppna händelserapporter och sorterar bort bruset.</p>
-        </li>
-        <li class="step" data-3d>
-          <span class="step-n">03</span>
-          <h3>Du får det som spelar roll</h3>
-          <p>Bara händelser i din kommun, tydligt formaterat för mobilen — med länk till polisens egen rapport.</p>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <section id="kvalitet" class="section">
-    <div class="container split">
-      <div class="reveal">
-        <div class="eyebrow eyebrow-line">Kvalitet före kvantitet</div>
-        <h2>Vi läser allt. <span class="accent">Du får det viktiga.</span></h2>
-        <p class="lead">Polisen publicerar hundratals rapporter om dagen. De flesta handlar inte om din vardag. Vi filtrerar hårt så att varje mejl är värt att öppna.</p>
-      </div>
-      <div class="filter reveal">
-        <div class="filter-col">
-          <h3><span class="tick tick-yes">✓</span> Det här skickar vi</h3>
-          <ul>
-            <li>Inbrott, stöld och rån</li>
-            <li>Misshandel, hot och våld</li>
-            <li>Skottlossning och explosioner</li>
-            <li>Bränder och bombhot</li>
-            <li>Bedrägerier och skadegörelse</li>
-          </ul>
-        </div>
-        <div class="filter-col muted-col">
-          <h3><span class="tick tick-no">✕</span> Det här sorterar vi bort</h3>
-          <ul>
-            <li>Trafik- och fordonskontroller</li>
-            <li>Automatiska brandlarm</li>
-            <li>Polisens dag- och nattsammanfattningar</li>
-            <li>Händelser i andra kommuner</li>
-            <li>Sådant du redan fått</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section id="faq" class="section section-alt">
     <div class="container faq-wrap">
       <div class="section-head reveal">
@@ -216,70 +137,43 @@
       </div>
       <div class="faq">
         <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">Kan jag få notiser direkt i mobilen?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><p>Ja — välj <b>Live</b> och slå på notiser för din mejlapp, så plingar det i mobilen så fort något händer. Mejlen är byggda för att läsas på mobilen.</p></div>
+          <button class="faq-q" aria-expanded="false">Vad skickar ni?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Inbrott, stöld, rån, misshandel, hot, skottlossning, explosioner och bränder i din kommun. Trafikkontroller, automatiska brandlarm och polisens egna sammanfattningar sorterar vi bort.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">Hur snabbt kommer en live-notis?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><p>Vi kontrollerar polisen.se var femte minut. Oftast får du mejlet inom några minuter efter att polisen publicerat händelsen. Polisen publicerar själva ibland med fördröjning.</p></div>
+          <button class="faq-q" aria-expanded="false">Kan jag få notiser i mobilen?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Ja — välj Live och slå på notiser för din mejlapp, så plingar det direkt. Mejlen är byggda för mobilen.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">Vad händer om inget har hänt?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><p>Med Live får du inga mejl alls — tystnad betyder lugnt. Med Sammanfattning får du ett kort mejl om att dagen varit lugn, så du vet att bevakningen fungerar.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">Hur byter jag tid, kommun eller avslutar?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><p>Varje mejl har en personlig länk längst ner. Har du inget mejl till hands kan du <button class="link-btn" data-open-manage>be om en ny länk här</button>.</p></div>
+          <button class="faq-q" aria-expanded="false">Hur byter jag tid eller avslutar?<span class="faq-icon" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Via länken längst ner i varje mejl. Har du inget mejl till hands kan du <button class="link-btn" data-open-manage>be om en ny länk här</button>.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false">Är ni kopplade till polisen?<span class="faq-icon" aria-hidden="true"></span></button>
-          <div class="faq-a"><p>Nej. Incident Tracker är en oberoende tjänst som använder polisens öppna händelserapporter. Vid nödsituation, ring alltid 112.</p></div>
+          <div class="faq-a"><p>Nej. Vi är en oberoende tjänst som använder polisens öppna händelserapporter. Vid nödsituation, ring alltid 112.</p></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="cta-band">
-    <div class="container cta-inner reveal">
-      <h2>Börja bevaka din kommun idag.</h2>
-      <button class="btn btn-primary" data-open-form>Starta bevakning <span aria-hidden="true">→</span></button>
     </div>
   </section>
 </main>
 
 <footer class="footer">
-  <div class="container footer-grid">
-    <div>
-      <a href="#top" class="brand">
-        <span class="brand-mark"><svg><use href="#logo"/></svg></span>
+  <div class="container footer-inner">
+    <a href="#top" class="brand">
+      <img class="brand-mark" src="logo.svg" alt="" width="42" height="42">
+      <span class="brand-text">
         <span class="brand-name">INCIDENT TRACKER</span>
-      </a>
-      <p class="footer-about">En oberoende bevakningstjänst för polisens händelserapporter. Byggd i Sverige, för alla 290 kommuner.</p>
-    </div>
-    <div>
-      <h4>Tjänsten</h4>
-      <ul class="footer-list">
-        <li><a href="#leverans">Live eller sammanfattning</a></li>
-        <li><a href="#kvalitet">Vad vi skickar</a></li>
-        <li><a href="#faq">Vanliga frågor</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Kontakt & juridik</h4>
-      <ul class="footer-list">
-        <li><a href="https://www.linkedin.com/in/blakejoeseph/" target="_blank" rel="noopener">Kontakta oss via LinkedIn</a></li>
-        <li><button class="link-btn" data-open-manage>Hantera eller avregistrera prenumeration</button></li>
-      </ul>
-      <p class="disclaimer">
-        Incident Tracker är inte kopplad till Polismyndigheten. Informationen hämtas
-        från polisens öppna händelserapporter och kan innehålla förseningar eller fel.
-        Vid pågående nödsituation, ring alltid 112.
-      </p>
-    </div>
+        <span class="brand-sub">SVERIGE</span>
+      </span>
+    </a>
+    <ul class="footer-links">
+      <li><a href="https://www.linkedin.com/in/blakejoeseph/" target="_blank" rel="noopener">Kontakt via LinkedIn</a></li>
+      <li><button class="link-btn" data-open-manage>Hantera prenumeration</button></li>
+    </ul>
   </div>
   <div class="container footer-bottom">
     <span>© <span id="year">2026</span> Incident Tracker</span>
-    <span>Byggd med omsorg i Sverige</span>
+    <span>Inte kopplad till Polismyndigheten. Vid nödsituation, ring 112.</span>
   </div>
 </footer>
 
@@ -288,7 +182,7 @@
   <div class="modal-box">
     <button class="modal-close" data-close aria-label="Stäng">✕</button>
     <div class="modal-head">
-      <span class="pill"><span aria-hidden="true">🛡</span> Kostnadsfri bevakning</span>
+      <span class="pill">Kostnadsfri bevakning</span>
       <h2 id="signupTitle">Skapa din bevakning</h2>
       <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
       <ol class="progress-labels"><li class="active">Kommun</li><li>Leverans</li><li>Kontakt</li></ol>
@@ -336,7 +230,7 @@
         <input type="text" id="name" placeholder="Anna Andersson" maxlength="100" autocomplete="name" required>
         <label for="email">E-post</label>
         <input type="email" id="email" placeholder="anna@exempel.se" maxlength="255" autocomplete="email" required>
-        <p class="fineprint">Genom att registrera dig godkänner du att vi lagrar dina uppgifter för att skicka händelserapporter. Du kan avregistrera dig när som helst.</p>
+        <p class="fineprint">Vi lagrar dina uppgifter för att skicka händelserapporter. Du kan avregistrera dig när som helst.</p>
       </div>
 
       <p class="form-error" id="formError" role="alert"></p>
@@ -348,7 +242,7 @@
     </form>
 
     <div class="form-done" id="formDone" hidden>
-      <div class="done-mark"><svg><use href="#logo"/></svg></div>
+      <img class="done-mark" src="logo.svg" alt="">
       <h3>Din bevakning är igång.</h3>
       <p id="doneText"></p>
     </div>

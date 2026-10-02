@@ -162,22 +162,22 @@ def html_mejl(rubrik, ingress, block_html, user):
     return f"""<!doctype html>
 <html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark"></head>
-<body style="margin:0;padding:0;background:#eef1f6;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef1f6;padding:24px 12px;">
+<body style="margin:0;padding:0;background:#ededed;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ededed;padding:24px 12px;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0b1220;">
-  <tr><td style="background:#0a1020;border-radius:16px 16px 0 0;padding:22px 24px;">
-    <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#4f8cff;box-shadow:0 0 12px #4f8cff;margin-right:8px;"></span>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111111;">
+  <tr><td style="background:#0a0a0a;border-radius:16px 16px 0 0;padding:22px 24px;">
+    <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e3b23c;box-shadow:0 0 12px #e3b23c;margin-right:8px;"></span>
     <span style="color:#ffffff;font-weight:800;letter-spacing:1.5px;font-size:13px;">INCIDENT TRACKER</span>
     <div style="color:#ffffff;font-size:22px;font-weight:800;margin-top:14px;line-height:1.25;">{e(rubrik)}</div>
-    <div style="color:#9fb0cc;font-size:14px;margin-top:6px;">{e(ingress)}</div>
+    <div style="color:#a8a8a8;font-size:14px;margin-top:6px;">{e(ingress)}</div>
   </td></tr>
   <tr><td style="background:#ffffff;padding:8px 24px 8px;border-radius:0 0 16px 16px;">
     {block_html}
-    <p style="font-size:12px;color:#6b7690;line-height:1.6;margin:24px 0 16px;border-top:1px solid #e6e9f0;padding-top:16px;">
+    <p style="font-size:12px;color:#777777;line-height:1.6;margin:24px 0 16px;border-top:1px solid #e5e5e5;padding-top:16px;">
       Du får det här för att du bevakar {e(user['kommun'])}.
-      <a href="{e(manage_url(user))}" style="color:#2f6bff;">Ändra leveranssätt, tid eller kommun</a> ·
-      <a href="{e(manage_url(user))}#avsluta" style="color:#6b7690;">Avsluta</a><br>
+      <a href="{e(manage_url(user))}" style="color:#9a7416;">Ändra leveranssätt, tid eller kommun</a> ·
+      <a href="{e(manage_url(user))}#avsluta" style="color:#777777;">Avsluta</a><br>
       Incident Tracker är inte kopplad till Polismyndigheten. Vid nödsituation, ring 112.
     </p>
   </td></tr>
@@ -190,12 +190,12 @@ def handelse_block(event):
     if url.startswith("/"):
         url = "https://polisen.se" + url
     plats = (event.get("location") or {}).get("name", "")
-    lank = f'<a href="{e(url)}" style="color:#2f6bff;font-size:13px;text-decoration:none;">Läs på polisen.se →</a>' if url else ""
+    lank = f'<a href="{e(url)}" style="color:#9a7416;font-size:13px;text-decoration:none;">Läs på polisen.se →</a>' if url else ""
     return f"""
-    <div style="padding:18px 0;border-bottom:1px solid #eef0f5;">
-      <div style="font-size:12px;color:#6b7690;letter-spacing:.3px;">{e(tid_text(event['_tid']))} · {e(plats)}</div>
+    <div style="padding:18px 0;border-bottom:1px solid #eeeeee;">
+      <div style="font-size:12px;color:#777777;letter-spacing:.3px;">{e(tid_text(event['_tid']))} · {e(plats)}</div>
       <div style="font-size:17px;font-weight:700;margin:4px 0 6px;">{e(handelsetyp(event))}</div>
-      <div style="font-size:15px;line-height:1.55;color:#2a3347;">{e(event.get('summary', ''))}</div>
+      <div style="font-size:15px;line-height:1.55;color:#2b2b2b;">{e(event.get('summary', ''))}</div>
       <div style="margin-top:8px;">{lank}</div>
     </div>"""
 
@@ -252,7 +252,7 @@ def mejl_handelser(user, handelser, sammanfattning):
         else:
             ingress = "Inga nya händelser rapporterade sedan förra sammanfattningen."
             amne = f"{kommun}: lugnt idag · {dag.day} {SVENSKA_MANADER[dag.month]}"
-            block = '<p style="font-size:15px;line-height:1.6;color:#2a3347;padding:18px 0;">Polisen har inte rapporterat något i din kommun som når upp till vår nivå. Det är goda nyheter.</p>'
+            block = '<p style="font-size:15px;line-height:1.6;color:#2b2b2b;padding:18px 0;">Polisen har inte rapporterat något i din kommun som når upp till vår nivå. Det är goda nyheter.</p>'
     else:
         if n == 1:
             rubrik = f"{handelsetyp(handelser[0])} i {kommun}"
@@ -270,16 +270,16 @@ def mejl_valkommen(user):
         hur = f"Du får en sammanfattning varje dag kl. {user['digest_time']}."
     else:
         hur = "Du får ett mejl så fort Polisen publicerar något relevant i din kommun."
-    block = f"""<p style="font-size:15px;line-height:1.6;color:#2a3347;padding-top:18px;">Hej {html.escape(user['name'])}!</p>
-    <p style="font-size:15px;line-height:1.6;color:#2a3347;">Din bevakning av <b>{html.escape(user['kommun'])}</b> är igång. {hur}</p>
-    <p style="padding:6px 0 4px;"><a href="{html.escape(manage_url(user))}" style="display:inline-block;background:#2f6bff;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:10px;">Hantera bevakning</a></p>"""
+    block = f"""<p style="font-size:15px;line-height:1.6;color:#2b2b2b;padding-top:18px;">Hej {html.escape(user['name'])}!</p>
+    <p style="font-size:15px;line-height:1.6;color:#2b2b2b;">Din bevakning av <b>{html.escape(user['kommun'])}</b> är igång. {hur}</p>
+    <p style="padding:6px 0 4px;"><a href="{html.escape(manage_url(user))}" style="display:inline-block;background:#e3b23c;color:#141006;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:10px;">Hantera bevakning</a></p>"""
     text = f"Hej {user['name']}!\n\nDin bevakning av {user['kommun']} är igång. {hur}\n\nHantera: {manage_url(user)}"
     return "Din bevakning är igång", text, html_mejl("Välkommen", f"Bevakning av {user['kommun']}", block, user)
 
 
 def mejl_hantera(user):
-    block = f"""<p style="font-size:15px;line-height:1.6;color:#2a3347;padding-top:18px;">Här är din personliga länk för att ändra eller avsluta bevakningen. Dela den inte med någon.</p>
-    <p style="padding:6px 0 4px;"><a href="{html.escape(manage_url(user))}" style="display:inline-block;background:#2f6bff;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:10px;">Hantera bevakning</a></p>"""
+    block = f"""<p style="font-size:15px;line-height:1.6;color:#2b2b2b;padding-top:18px;">Här är din personliga länk för att ändra eller avsluta bevakningen. Dela den inte med någon.</p>
+    <p style="padding:6px 0 4px;"><a href="{html.escape(manage_url(user))}" style="display:inline-block;background:#e3b23c;color:#141006;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:10px;">Hantera bevakning</a></p>"""
     text = f"Din länk för att hantera bevakningen:\n{manage_url(user)}"
     return "Din länk för att hantera bevakningen", text, html_mejl("Hantera din bevakning", user["kommun"], block, user)
 

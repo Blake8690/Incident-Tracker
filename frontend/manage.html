@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <title>Hantera bevakning — Incident Tracker</title>
-<meta name="theme-color" content="#050a16">
+<meta name="theme-color" content="#0a0a0a">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,15 +16,12 @@
 <header class="nav">
   <div class="container nav-inner">
     <a href="./" class="brand">
-      <span class="brand-mark"><img src="logo.svg" alt="" width="34" height="34"></span>
+      <img class="brand-mark" src="logo.svg" alt="" width="42" height="42">
       <span class="brand-text">
         <span class="brand-name">INCIDENT TRACKER</span>
-        <span class="brand-sub">SVERIGE · 290 KOMMUNER</span>
+        <span class="brand-sub">SVERIGE</span>
       </span>
     </a>
-    <div class="nav-actions" style="margin-left:auto">
-      <button id="theme-toggle" class="icon-btn" aria-label="Växla ljust/mörkt tema">☀</button>
-    </div>
   </div>
 </header>
 
@@ -81,16 +78,6 @@
 <script src="kommuner.js"></script>
 <script>
 const API_URL = "https://indicent-tracker-com.onrender.com";
-const root = document.documentElement;
-const themeBtn = document.getElementById("theme-toggle");
-const setTheme = t => { root.dataset.theme = t; themeBtn.textContent = t === "light" ? "☾" : "☀"; };
-try { setTheme(localStorage.getItem("theme") || "dark"); } catch { setTheme("dark"); }
-themeBtn.addEventListener("click", () => {
-  const next = root.dataset.theme === "light" ? "dark" : "light";
-  setTheme(next);
-  try { localStorage.setItem("theme", next); } catch {}
-});
-
 const token = new URLSearchParams(location.search).get("token") || "";
 const $ = id => document.getElementById(id);
 const form = $("settings");
