@@ -28,6 +28,7 @@ jobs:
       - name: Run script
         env:
           API_URL: ${{ secrets.API_URL }}
+          WORKER_TOKEN: ${{ secrets.WORKER_TOKEN }}
           EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: python send_email.py

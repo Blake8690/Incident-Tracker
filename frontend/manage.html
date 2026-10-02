@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Hantera bevakning — Incident Tracker</title>
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="frontend/frontend/frontend" class="brand">
+      <img class="brand-mark" src="logo.svg" alt="" width="42" height="42">
+      <span class="brand-text">
+        <span class="brand-name">INCIDENT TRACKER</span>
+        <span class="brand-sub">SVERIGE</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="manage-page">
+  <div class="container">
+    <div class="manage-card">
+      <div class="eyebrow eyebrow-line">Din bevakning</div>
+      <h1 id="title">Laddar…</h1>
+      <p class="muted" id="subtitle"></p>
+
+      <form id="settings" hidden novalidate>
+        <label for="kommun">Kommun</label>
+        <input type="text" id="kommun" list="kommun-list" autocomplete="off" required>
+        <datalist id="kommun-list"></datalist>
+
+        <span class="label">Leveranssätt</span>
+        <div class="choice-group" role="radiogroup">
+          <label class="choice">
+            <input type="radio" name="mode" value="live">
+            <span class="choice-body">
+              <span class="choice-title"><span class="live-dot"></span> Live</span>
+              <span class="choice-text">Ett mejl direkt när polisen publicerar något.</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="mode" value="digest">
+            <span class="choice-body">
+              <span class="choice-title">◷ Sammanfattning</span>
+              <span class="choice-text">Ett mejl om dagen vid den tid du väljer.</span>
+            </span>
+          </label>
+        </div>
+        <div class="time-row" id="timeRow" hidden>
+          <label for="digestTime">Skicka sammanfattningen kl.</label>
+          <select id="digestTime"></select>
+        </div>
+
+        <p class="form-error" id="err" role="alert"></p>
+        <p class="form-success" id="ok" role="status" hidden>Sparat ✓</p>
+        <div class="form-nav"><button type="submit" class="btn btn-primary">Spara ändringar</button></div>
+
+        <div class="danger-zone" id="avsluta">
+          <h3>Avsluta bevakningen</h3>
+          <p class="muted" style="margin:6px 0 16px">Vi raderar dina uppgifter direkt och skickar inga fler mejl.</p>
+          <button type="button" class="btn btn-danger" id="unsubscribe">Avsluta och radera mina uppgifter</button>
+        </div>
+      </form>
+
+      <p id="gone" hidden><a class="btn btn-ghost" href="frontend/frontend/frontend">Till startsidan</a></p>
+    </div>
+  </div>
+</main>
+
+<script src="kommuner.js"></script>
+<script>
+const API_URL = "https://indicent-tracker-com.onrender.com";
+const token = new URLSearchParams(location.search).get("token") || "";
+const $ = id => document.getElementById(id);
+const form = $("settings");
+const TIDER = Array.from({ length: 48 }, (_, i) => `${String(Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}`);
+$("kommun-list").innerHTML = KOMMUNER.map(k => `<option value="${k}">`).join("");
+const mode = () => form.querySelector("input[name=mode]:checked")?.value;
+form.querySelectorAll("input[name=mode]").forEach(r => r.addEventListener("change", () => { $("timeRow").hidden = mode() !== "digest"; }));
+
+function showGone(title, text) {
+  $("title").textContent = title;
+  $("subtitle").textContent = text;
+  form.hidden = true;
+  $("gone").hidden = false;
+}
+
+async function load() {
+  if (!token) return showGone("Länken saknas", "Använd länken längst ner i ett mejl från oss, eller be om en ny från startsidan.");
+  try {
+    const res = await fetch(`${API_URL}/api/subscription/${encodeURIComponent(token)}`);
+    const data = await res.json();
+    if (!res.ok) return showGone("Länken fungerar inte", data.error || "Prenumerationen finns inte längre.");
+    $("title").textContent = `Hej ${data.name}!`;
+    $("subtitle").textContent = `Bevakningen skickas till ${data.email}.`;
+    $("kommun").value = data.kommun;
+    form.querySelector(`input[name=mode][value=${data.delivery_mode}]`).checked = true;
+    $("digestTime").innerHTML = TIDER.map(t => `<option${t === data.digest_time ? " selected" : ""}>${t}</option>`).join("");
+    $("timeRow").hidden = data.delivery_mode !== "digest";
+    form.hidden = false;
+    if (location.hash === "#avsluta") {
+      $("avsluta").scrollIntoView({ behavior: "smooth", block: "center" });
+      $("avsluta").classList.add("highlight");
+    }
+  } catch {
+    showGone("Kunde inte nå servern", "Servern vaknar ibland långsamt. Ladda om sidan om en halv minut.");
+  }
+}
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  $("err").textContent = "";
+  $("ok").hidden = true;
+  const kommun = KOMMUNER.find(k => k.toLowerCase() === $("kommun").value.trim().toLowerCase());
+  if (!kommun) { $("err").textContent = "Välj en kommun från listan."; return $("kommun").focus(); }
+  $("kommun").value = kommun;
+  const btn = form.querySelector("button[type=submit]");
+  btn.disabled = true;
+  try {
+    const res = await fetch(`${API_URL}/api/subscription/${encodeURIComponent(token)}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ kommun, delivery_mode: mode(), digest_time: $("digestTime").value }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || "Kunde inte spara.");
+    $("ok").hidden = false;
+  } catch (ex) {
+    $("err").textContent = ex.message === "Failed to fetch" ? "Kunde inte nå servern." : ex.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+$("unsubscribe").addEventListener("click", async () => {
+  if (!confirm("Vill du avsluta bevakningen och radera dina uppgifter?")) return;
+  try {
+    const res = await fetch(`${API_URL}/api/subscription/${encodeURIComponent(token)}`, { method: "DELETE" });
+    if (!res.ok && res.status !== 404) throw new Error();
+    showGone("Bevakningen är avslutad", "Dina uppgifter är raderade. Välkommen tillbaka när du vill.");
+  } catch {
+    $("err").textContent = "Kunde inte nå servern. Försök igen.";
+  }
+});
+
+load();
+</script>
+</body>
+</html>

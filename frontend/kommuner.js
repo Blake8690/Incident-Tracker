@@ -40,11 +40,10 @@ const KOMMUNER = [
   "Ulricehamn", "Umeå", "Upplands Väsby", "Upplands-Bro", "Uppsala",
   "Uppvidinge", "Vadstena", "Vaggeryd", "Valdemarsvik", "Vallentuna",
   "Vansbro", "Vara", "Varberg", "Vaxholm", "Vellinge", "Vetlanda", "Vilhelmina",
-  "Vimmerby", "Vindeln", "Vingåker", "Vänersborg", "Vännäs", "Värmdö",
+  "Vimmerby", "Vindeln", "Vingåker", "Vårgårda", "Vänersborg", "Vännäs", "Värmdö",
   "Värnamo", "Västervik", "Västerås", "Växjö", "Ydre", "Ystad", "Åmål",
   "Ånge", "Åre", "Årjäng", "Åsele", "Åstorp", "Åtvidaberg", "Älmhult",
   "Älvdalen", "Älvkarleby", "Älvsbyn", "Ängelholm", "Öckerö", "Ödeshög",
   "Örebro", "Örkelljunga", "Örnsköldsvik", "Östersund", "Österåker",
   "Östhammar", "Östra Göinge", "Överkalix", "Övertorneå"
 ];
-
